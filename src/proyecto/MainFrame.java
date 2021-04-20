@@ -79,7 +79,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         txttematica = new javax.swing.JTextPane();
-        btncrear = new javax.swing.JButton();
+        btncrearclase = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaregistro = new javax.swing.JTable();
@@ -93,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
         boxclase = new javax.swing.JComboBox<>();
         jLabel24 = new javax.swing.JLabel();
         btnveralumnos = new javax.swing.JButton();
-        btnagregaralumno1 = new javax.swing.JButton();
+        btnagregarregistro = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaalumnos = new javax.swing.JTable();
@@ -236,10 +236,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         jScrollPane7.setViewportView(txttematica);
 
-        btncrear.setText("Crear");
-        btncrear.addActionListener(new java.awt.event.ActionListener() {
+        btncrearclase.setText("Crear");
+        btncrearclase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncrearActionPerformed(evt);
+                btncrearclaseActionPerformed(evt);
             }
         });
 
@@ -263,7 +263,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(118, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btncrear, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btncrearclase, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90))
         );
         jPanel7Layout.setVerticalGroup(
@@ -286,7 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                .addComponent(btncrear, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btncrearclase, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
 
@@ -343,10 +343,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnveralumnos.setText("Ver alumnos");
 
-        btnagregaralumno1.setText("Agregar");
-        btnagregaralumno1.addActionListener(new java.awt.event.ActionListener() {
+        btnagregarregistro.setText("Agregar");
+        btnagregarregistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnagregaralumno1ActionPerformed(evt);
+                btnagregarregistroActionPerformed(evt);
             }
         });
 
@@ -376,7 +376,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(564, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnagregaralumno1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnagregarregistro, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
         jPanel9Layout.setVerticalGroup(
@@ -399,7 +399,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnveralumnos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
-                .addComponent(btnagregaralumno1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnagregarregistro, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
 
@@ -749,48 +749,21 @@ public class MainFrame extends javax.swing.JFrame {
         String statement7 = "INSERT INTO `alumnos` VALUES ('PERSONA 7', '19', '1165417456', 'HERNANXDSV@GMAIL.COM', '00000007', '2021/04/21', '1', null, null, 'Ninguna')";
         String statement8 = "INSERT INTO `alumnos` VALUES ('PERSONA 8', '19', '1165417457', 'HERNANXDSV@GMAIL.COM', '00000008', '2021/04/21', '1', null, null, 'Ninguna')";
         String statement9 = "INSERT INTO `alumnos` VALUES ('PERSONA 9', '19', '1165417458', 'HERNANXDSV@GMAIL.COM', '00000009', '2021/04/21', '1', null, null, 'Ninguna')";
-        try{
-            prepSt = conn.prepareStatement(statement1);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement2);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement3);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement4);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement5);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement6);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement7);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement8);
-            prepSt.execute();
-            prepSt = conn.prepareStatement(statement9);
-            prepSt.execute();
-            prepSt.close();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+
+        dbconn.modificationStatement(statement1);
+        dbconn.modificationStatement(statement2);
+        dbconn.modificationStatement(statement3);
+        dbconn.modificationStatement(statement4);
+        dbconn.modificationStatement(statement5);
+        dbconn.modificationStatement(statement6);
+        dbconn.modificationStatement(statement7);
+        dbconn.modificationStatement(statement8);
+        dbconn.modificationStatement(statement9);
     }//GEN-LAST:event_btntestActionPerformed
 
     private void btnagregaralumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregaralumnoActionPerformed
-        try{
-            prepSt = conn.prepareStatement("INSERT INTO `alumnos` VALUES (?, ?, ?, ?, ?, ?, '1', null, null, ?)");
-            prepSt.setString(1, txtnewalumno.getText().toUpperCase());
-            prepSt.setString(2, numnewedad.getValue().toString());
-            prepSt.setString(3, txtnewtelefono.getText());
-            prepSt.setString(4, txtnewmail.getText().toUpperCase());
-            prepSt.setString(5, txtnewdni.getText());
-            prepSt.setString(6, txtfechainicio.getText());
-            prepSt.setString(7, txtanotaciones.getText());
-            System.out.println(prepSt);
-            prepSt.execute();
-            prepSt.close();
-
-            PopupMessage pum = new PopupMessage(3);
-            pum.setVisible(true);
-
+        String statement = "INSERT INTO `alumnos` VALUES ('" + txtnewalumno.getText().toUpperCase() + "', '" + numnewedad.getValue().toString() + "', '" + txtnewtelefono.getText() + "', '" + txtnewmail.getText().toUpperCase() + "', '" + txtnewdni.getText() + "', '" + txtfechainicio.getText() + "', '1', null, null, '" + txtanotaciones.getText() + "')";
+        if(dbconn.modificationStatement(statement)){
             txtnewalumno.setText("");
             numnewedad.setValue(0);
             txtnewtelefono.setText("");
@@ -798,9 +771,10 @@ public class MainFrame extends javax.swing.JFrame {
             txtnewdni.setText("");
             txtfechainicio.setText("");
             txtanotaciones.setText("");
-        }catch(SQLException e){
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+
+            PopupMessage pum = new PopupMessage(3);
+            pum.setVisible(true);
+        }else{
             PopupMessage pum = new PopupMessage(0);
             pum.setVisible(true);
         }
@@ -1011,7 +985,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnactualizaralumnosActionPerformed
 
-    private void btncrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearActionPerformed
+    private void btncrearclaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearclaseActionPerformed
         String horario = txthorario.getText();
         String dia = boxdia.getSelectedItem().toString();
         String num = numclase.getValue().toString();
@@ -1054,14 +1028,10 @@ public class MainFrame extends javax.swing.JFrame {
             pum.setVisible(true);
         }else{
             statement += num + "', '" + diaDB + "', '" + horario + "', '0', '" + tematica + "')";
-            try{
-                prepSt = conn.prepareStatement(statement);
-                prepSt.execute();
-                prepSt.close();
+            if(dbconn.modificationStatement(statement)){
                 PopupMessage pum = new PopupMessage(4);
                 pum.setVisible(true);
-            }catch(SQLException e){
-                e.printStackTrace();
+            }else{
                 PopupMessage pum = new PopupMessage(0);
                 pum.setVisible(true);
                 return;
@@ -1108,9 +1078,7 @@ public class MainFrame extends javax.swing.JFrame {
                             int newid = Integer.parseInt(id)+1;
 
                             String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newid + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                            System.out.println(stupdate);
-                            prepSt = conn.prepareStatement(stupdate);
-                            prepSt.execute();
+                            dbconn.modificationStatement(stupdate);
                             prepSt.close();
 
                         } catch (SQLException e) {
@@ -1127,7 +1095,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         
-    }//GEN-LAST:event_btncrearActionPerformed
+    }//GEN-LAST:event_btncrearclaseActionPerformed
 
     private void btnactualizarclasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarclasesActionPerformed
         int elitotal = tablasemanal.getRowCount();
@@ -1203,17 +1171,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
         String statement = "TRUNCATE TABLE `alumnos`";
-        try{
-            prepSt = conn.prepareStatement(statement);
-            prepSt.execute();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+        dbconn.modificationStatement(statement);
     }//GEN-LAST:event_btnresetActionPerformed
 
-    private void btnagregaralumno1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregaralumno1ActionPerformed
+    private void btnagregarregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarregistroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnagregaralumno1ActionPerformed
+    }//GEN-LAST:event_btnagregarregistroActionPerformed
 
     private void initModelConsultaAlumno(){
         model1.addColumn("Nombre");
@@ -1293,9 +1256,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnactualizarclases;
     private javax.swing.JButton btnactualizarregistro;
     private javax.swing.JButton btnagregaralumno;
-    private javax.swing.JButton btnagregaralumno1;
+    private javax.swing.JButton btnagregarregistro;
     private javax.swing.JButton btnbuscar;
-    private javax.swing.JButton btncrear;
+    private javax.swing.JButton btncrearclase;
     private javax.swing.JButton btnlimpiar;
     private javax.swing.JButton btnreset;
     private javax.swing.JButton btntest;

@@ -1,6 +1,7 @@
 package proyecto;
 
 public class Clase {
+    
     public String setDBValue(String value){
         System.out.println("Value received: " + value);
         String returnValue = "";
@@ -27,6 +28,7 @@ public class Clase {
         System.out.println("Value returned: " + returnValue);
         return returnValue;
     }
+    
     public String setClassValue(String value){
         System.out.println("Value Received: " + value);
         String returnValue = "";
@@ -52,5 +54,16 @@ public class Clase {
         }
         System.out.println("Value returned: " + returnValue);
         return returnValue;
+    }
+    
+    public String generateClassID(String dia, String horas, String mins){
+        String ID = "";
+        ID += dia.charAt(0);
+        ID = ID.toUpperCase();
+        ID += dia.charAt(1);
+        ID += horas;
+        ID += mins;
+        System.out.println("ID: " + ID);
+        return ID;
     }
 }
