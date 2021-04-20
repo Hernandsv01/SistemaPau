@@ -58,7 +58,7 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            PopupMessage pum = new PopupMessage(0);
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
             pum.setVisible(true);
         }
         this.tablaalumnos.setModel(model);

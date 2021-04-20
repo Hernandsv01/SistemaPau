@@ -15,42 +15,42 @@ public class PopupMessage extends javax.swing.JFrame {
 
     /**
      * Creates new form PopupMessage
-     * @param msg takes wat color and message is wanted for the popup frame
+     * @param popup takes wat color and message is wanted for the popup frame
      */
-    public PopupMessage(int msg) {
+    public PopupMessage(PopupType popup) {
         initComponents();
-        switch (msg) {
-            case 0:
+        switch (popup) {
+            case ERROR:
                 text.setText("Error");
                 text.setForeground(Color.red);
                 text.setFont(text.getFont().deriveFont(32.0f));
                 break;
-            case 1:
+            case A_ACTUALIZADO:
                 text.setText("Alumno actualizado con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
                 break;
-            case 2:
+            case A_ELIMINADO:
                 text.setText("Alumno eliminado con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
                 break;
-            case 3:
+            case A_AGREGADO:
                 text.setText("Alumno agregado con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
                 break;
-            case 4:
+            case C_AGREGADA:
                 text.setText("Clase agregada con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
                 break;
-            case 5:
+            case C_EDITADA:
                 text.setText("Clase editada con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
                 break;
-            case 6:
+            case C_ELIMINADA:
                 text.setText("Clase eliminada con exito");
                 text.setForeground(Color.green);
                 text.setFont(text.getFont().deriveFont(18.0f));
@@ -119,6 +119,7 @@ public class PopupMessage extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("Convert2Lambda")
     public static void main2(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -132,15 +133,14 @@ public class PopupMessage extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PopupMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PopupMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PopupMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PopupMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -148,8 +148,9 @@ public class PopupMessage extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new PopupMessage(0).setVisible(true);
+                
             }
         });
     }

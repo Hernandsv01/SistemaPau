@@ -21,16 +21,14 @@ public class ConfirmMessage extends javax.swing.JFrame {
     private ViewerClaseSemanal VCS;
     private EditorClaseSemanal ECS;
     private int type;
-    private final DBConnection dbconn = new DBConnection();
-    private final Connection conn;
-    private PreparedStatement prepSt;
+    private final DBConnection dbconn;
     
     /**
      * Creates new form ConfirmMessage
      */
     public ConfirmMessage() {
         initComponents();
-        conn = dbconn.connection();
+        this.dbconn = new DBConnection();
     }
     
     public void setDNI(String dni){
@@ -125,32 +123,22 @@ public class ConfirmMessage extends javax.swing.JFrame {
     private void btnaceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaceptarActionPerformed
         if(type == 1){
             String statement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
-            try{
-                prepSt = conn.prepareStatement(statement);
-                prepSt.execute();
-                prepSt.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            dbconn.modificationStatement(statement);
+            
             dispose();
             EA.dispose();
 
-            PopupMessage pum = new PopupMessage(2);
+            PopupMessage pum = new PopupMessage(PopupType.A_ELIMINADO);
             pum.setVisible(true);
         }else{
             String statement = "DELETE FROM `clasesemanal` WHERE `clasesemanal`.`hora` = '" + hora + "' AND `clasesemanal`.`diasemana` = '" + dia + "'";
-            try{
-                prepSt = conn.prepareStatement(statement);
-                prepSt.execute();
-                prepSt.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            dbconn.modificationStatement(statement);
+            
             dispose();
             VCS.dispose();
             ECS.dispose();
 
-            PopupMessage pum = new PopupMessage(6);
+            PopupMessage pum = new PopupMessage(PopupType.C_ELIMINADA);
             pum.setVisible(true);
         }
     }//GEN-LAST:event_btnaceptarActionPerformed
@@ -162,6 +150,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("Convert2Lambda")
     public static void main2(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -175,15 +164,14 @@ public class ConfirmMessage extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConfirmMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConfirmMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConfirmMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ConfirmMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -191,6 +179,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ConfirmMessage().setVisible(true);
             }

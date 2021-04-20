@@ -20,7 +20,7 @@ public final class DBConnection {
     
     public Connection connection(){
         try{
-            conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/sistemapau", "root", "");
+            conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectopau", "root", "");
             System.out.println("Conexión exitosa");
         }
         catch(SQLException e){
@@ -52,6 +52,10 @@ public final class DBConnection {
                     case comentarios:
                         String[] str4 = {rs.getString("DNI"), rs.getString("Comentario")};
                         list.add(str4);
+                        break;
+                    case rowCount:
+                        String[] str5 = {rs.getString("count")};
+                        list.add(str5);
                         break;
                 }
             }

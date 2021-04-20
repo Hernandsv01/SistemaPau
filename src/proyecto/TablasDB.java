@@ -4,5 +4,6 @@ public enum TablasDB {
     alumnos,
     clasesemanal,
     clasesalumnos,
-    comentarios
+    comentarios,
+    rowCount
 }
