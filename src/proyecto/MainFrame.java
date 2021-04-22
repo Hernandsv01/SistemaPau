@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         model3.addRow(str);
         tablasemanal.setShowGrid(true);
         this.tablaregistro.setModel(model4);
+        
         conn = dbconn.connection();
     }
 
@@ -772,10 +775,10 @@ public class MainFrame extends javax.swing.JFrame {
             txtfechainicio.setText("");
             txtanotaciones.setText("");
 
-            PopupMessage pum = new PopupMessage(3);
+            PopupMessage pum = new PopupMessage(PopupType.A_AGREGADO);
             pum.setVisible(true);
         }else{
-            PopupMessage pum = new PopupMessage(0);
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
             pum.setVisible(true);
         }
     }//GEN-LAST:event_btnagregaralumnoActionPerformed
@@ -790,36 +793,41 @@ public class MainFrame extends javax.swing.JFrame {
     private void tabladeresultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabladeresultadosMouseClicked
         int row = tabladeresultados.getSelectedRow();
         String dni = (String)tabladeresultados.getValueAt(row, 1);
-        String[] arrAlumno = new String[10];
+        
+//        String[] arrAlumno = new String[10];
         String statement = "SELECT * FROM `alumnos` WHERE dni = " + dni;
-        System.out.println(statement);
-        try {
-            prepSt = conn.prepareStatement(statement);
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                arrAlumno[0] = rs.getString("Nombre");
-                arrAlumno[1] = rs.getString("DNI");
-                arrAlumno[2] = rs.getString("Telefono");
-                arrAlumno[3] = rs.getString("Mail");
-                arrAlumno[4] = rs.getString("Edad");
-                arrAlumno[5] = rs.getString("Estado");
-                arrAlumno[6] = rs.getString("diaclase");
-                if(arrAlumno[6] != null){
-                    arrAlumno[6] = clase.setClassValue(arrAlumno[6]);
-                }
-                arrAlumno[7] = rs.getString("horaclase");
-                arrAlumno[8] = rs.getString("FechaInicio");
-                arrAlumno[9] = rs.getString("Comentarios");
-                if(Integer.parseInt(arrAlumno[5]) == 0){
-                    arrAlumno[5] = "Inactivo";
-                }else{
-                    arrAlumno[5] = "Activo";
-                }
-            }
-            prepSt.close();
-        } catch (NumberFormatException | SQLException e) {
-            e.printStackTrace();
-        }
+//        System.out.println(statement);
+//        try {
+//            prepSt = conn.prepareStatement(statement);
+//            rs = prepSt.executeQuery();
+//            while(rs.next()){
+//                arrAlumno[0] = rs.getString("Nombre");
+//                arrAlumno[1] = rs.getString("DNI");
+//                arrAlumno[2] = rs.getString("Telefono");
+//                arrAlumno[3] = rs.getString("Mail");
+//                arrAlumno[4] = rs.getString("Edad");
+//                arrAlumno[5] = rs.getString("Estado");
+//                arrAlumno[6] = rs.getString("diaclase");
+//                if(arrAlumno[6] != null){
+//                    arrAlumno[6] = clase.setClassValue(arrAlumno[6]);
+//                }
+//                arrAlumno[7] = rs.getString("horaclase");
+//                arrAlumno[8] = rs.getString("FechaInicio");
+//                arrAlumno[9] = rs.getString("Comentarios");
+//                if(Integer.parseInt(arrAlumno[5]) == 0){
+//                    arrAlumno[5] = "Inactivo";
+//                }else{
+//                    arrAlumno[5] = "Activo";
+//                }
+//            }
+//            prepSt.close();
+//        } catch (NumberFormatException | SQLException e) {
+//            e.printStackTrace();
+//        }
+        
+        List<String[]> infoAlumno;
+        infoAlumno = dbconn.selectStatement(statement, TablasDB.alumnos);
+        
         
         String stselect = "SELECT * FROM `clasesemanal`";
         String stcountrows = "SELECT COUNT(*) AS rowcount FROM `clasesemanal`";
@@ -852,8 +860,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         EditorAlumno EA = new EditorAlumno();
         EA.setEA(EA);
-        EA.setClases(arrClases);
-        EA.setInfo(arrAlumno);
+        EA.setOpcionesClases(arrClases);
+        EA.setInfo(infoAlumno.get(0));
         EA.setBox();
         EA.setVisible(true);
 
@@ -991,147 +999,106 @@ public class MainFrame extends javax.swing.JFrame {
         String num = numclase.getValue().toString();
         String tematica = txttematica.getText();
         
-        String horavieja = "";
-        
-        String diaDB;
-        if("Seleccione".equals(dia)){
-            PopupMessage pum = new PopupMessage(0);
-            pum.setVisible(true);
-            return;
-        }else{
-            diaDB = clase.setDBValue(dia);
-        }
-        
-        try{
-            prepSt = conn.prepareStatement("SELECT * FROM `clasesemanal`");
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                if(diaDB.equals(rs.getString("diasemana")) && horario.equals(rs.getString("hora"))){
-                    PopupMessage pum = new PopupMessage(0);
-                    pum.setVisible(true);
-                    prepSt.close();
-                    return;
-                }
-            }
-            
-            prepSt.close();
-        }catch(SQLException e){
-            e.printStackTrace();
-            PopupMessage pum = new PopupMessage(0);
-            pum.setVisible(true);
-            return;
-        }
-        
-        String statement = "INSERT INTO `clasesemanal` VALUES ('";
+        // Checks if any value is null
         if(horario == null || "Seleccione".equals(dia) || "0".equals(num)){
-            PopupMessage pum = new PopupMessage(0);
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
             pum.setVisible(true);
-        }else{
-            statement += num + "', '" + diaDB + "', '" + horario + "', '0', '" + tematica + "')";
-            if(dbconn.modificationStatement(statement)){
-                PopupMessage pum = new PopupMessage(4);
-                pum.setVisible(true);
-            }else{
-                PopupMessage pum = new PopupMessage(0);
+            return;
+        }
+        
+        //Checks that created class doesn't already exist
+        String diaDB = clase.setDBValue(dia);
+        List<String[]> list = dbconn.selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
+        for(int i = 0; i < list.size(); i++){
+            String[] str = list.get(i);
+            if(diaDB.equals(str[1]) && horario.equals(str[2])){
+                PopupMessage pum = new PopupMessage(PopupType.ERROR);
                 pum.setVisible(true);
                 return;
             }
-            txthorario.setText("");
-            boxdia.setSelectedIndex(0);
-            numclase.setValue(0);
-            txttematica.setText("");
-            
-            int numnum = Integer.parseInt(num);
-            try{
-                while(tablasemanal.getValueAt((numnum-1), Integer.parseInt(diaDB)) != null){
-                    try{
-                        String selectstatement = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `id` = '" + numnum + "'";
-                        System.out.println(selectstatement);
-                        prepSt = conn.prepareStatement(selectstatement);
-                        rs = prepSt.executeQuery();
-                        while(rs.next()){
-                            horavieja = rs.getString("hora");
-                        }
-                        prepSt.close();
-                    }catch(SQLException e){
-                            e.printStackTrace();
-                    }
-                    System.out.println("Checking cell...");
-                    System.out.println("    Row: " + numnum);
-                    System.out.println("    Column: " + diaDB);
-                    if(tablasemanal.getValueAt(numnum-1, Integer.parseInt(diaDB)) != null){
-                        System.out.println("NOT NULL");
-                        String stselect = "SELECT * FROM `clasesemanal` WHERE `id` = '" + numnum + "' AND `diasemana` = '" + diaDB + "'";
-                        System.out.println(stselect);
+        }
+        
+        //Gets class ID and inserts class into database
+        String[] doselementos = horario.split(":");
+        String classID = clase.generateClassID(dia, doselementos[0], doselementos[1]);
+        String statement = "INSERT INTO `clasesemanal` VALUES ('";
+        statement += classID + "', '" + diaDB + "', '" + horario + "', " + num + ", '0', '" + tematica + "')";
+        if(dbconn.modificationStatement(statement)){
+            PopupMessage pum = new PopupMessage(PopupType.C_AGREGADA);
+            pum.setVisible(true);
+        }else{
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
+            pum.setVisible(true);
+            return;
+        }
+        
+        //Sets values back to empty
+        txthorario.setText("");
+        boxdia.setSelectedIndex(0);
+        numclase.setValue(0);
+        txttematica.setText("");
 
-                        try {
-                            String id = "";
-                            String diasemana = "";
-                            String hora = "";
-
-                            prepSt = conn.prepareStatement(stselect);
-                            rs = prepSt.executeQuery();
-                            while(rs.next()){
-                                id = rs.getString("id");
-                                diasemana = rs.getString("diasemana");
-                            }
-                            int newid = Integer.parseInt(id)+1;
-
-                            String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newid + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                            dbconn.modificationStatement(stupdate);
-                            prepSt.close();
-
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-
-                    }else{
-                        System.out.println("NULL");
-                    }
-                    numnum++;
-                }
-            }catch(IndexOutOfBoundsException e){
-                System.out.println(e.getMessage());
+        //Checks if cell is already in use
+        //-------------------------REVISAR ALGORITMO------------------------------------
+        int intnum = Integer.parseInt(num);
+        int intNumTableValue = intnum-1;
+        try{
+            while(tablasemanal.getValueAt((intNumTableValue), Integer.parseInt(diaDB)) != null){
+                System.out.println("Cell not null values: ");
+                System.out.println("    Row: " + intNumTableValue);
+                System.out.println("    Column: " + diaDB);
+                
+                String selectstatement = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `id` = '" + intnum + "'";
+                List<String[]> results = dbconn.selectStatement(selectstatement, TablasDB.clasesemanal);
+                String[] strRes = results.get(0);
+                String diasemana = strRes[1];
+                String horavieja = strRes[2];
+                String numClase = strRes[3];
+                
+                int newNumClase = Integer.parseInt(numClase)+1;
+                String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
+                dbconn.modificationStatement(stupdate);
+                intnum++;
             }
+        }catch(IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
         }
         
     }//GEN-LAST:event_btncrearclaseActionPerformed
 
     private void btnactualizarclasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarclasesActionPerformed
+        //Deletes previous table
         int elitotal = tablasemanal.getRowCount();
         for(int i = elitotal-1; i>=0; i--){
             model3.removeRow(i);
         }
+        
+        //Creates new table
         String statement = "SELECT * FROM `clasesemanal`";
-        System.out.println(statement);
         String[] empty = new String[0];
-        try {
-            prepSt = conn.prepareStatement(statement);
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                String id = rs.getString("ID");
-                int idint = Integer.parseInt(id);
-                String diasemana = rs.getString("diasemana");
-                int diasemanaint = Integer.parseInt(diasemana);
-                String hora = rs.getString("hora");
-                String numeroalumnos = rs.getString("numeroalumnos");
-                
-                int cantidadfilas = tablasemanal.getRowCount();
-                cantidadfilas--;
-                idint--;
-                
-                if(cantidadfilas > idint+1){
-                    model3.setValueAt(hora + " - Ver Alumnos(" + numeroalumnos + ")", idint, diasemanaint);
-                }else{
-                    for(int i = idint - cantidadfilas; i > 0; i--){
-                        model3.addRow(empty);
-                    }
-                    model3.setValueAt(hora + " - Ver Alumnos(" + numeroalumnos + ")", idint, diasemanaint);
+        
+        List<String[]> list = dbconn.selectStatement(statement, TablasDB.clasesemanal);
+        for(int i = 0; i < list.size(); i++){
+            String[] str = list.get(i);
+            String diasemana = str[1];
+            String hora = str[2];
+            String num = str[3];
+            String cantidad = str[4];
+            
+            int diasemanaInt = Integer.parseInt(diasemana);
+            int numDBValue = Integer.parseInt(num)-1;
+            int numeroUltimaFila = tablasemanal.getRowCount()-1;
+            
+            if(numeroUltimaFila > numDBValue+1){
+                model3.setValueAt(hora + " - Ver Alumnos(" + cantidad + ")", numDBValue, diasemanaInt);
+            }else{
+                for(int l = numDBValue - numeroUltimaFila; l > 0; l--){
+                    model3.addRow(empty);
                 }
+                model3.setValueAt(hora + " - Ver Alumnos(" + cantidad + ")", numDBValue, diasemanaInt);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        
     }//GEN-LAST:event_btnactualizarclasesActionPerformed
 
     private void btnactualizarregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarregistroActionPerformed
@@ -1139,33 +1106,19 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnactualizarregistroActionPerformed
 
     private void tablasemanalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablasemanalMouseClicked
-        if(null != tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn())){
+        if(tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()) != null){
             String doselementos[] = tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()).toString().split(" - ");
             String statement = "SELECT * FROM `clasesemanal` WHERE `hora` = '" + doselementos[0] + "' AND `diasemana` = " + tablasemanal.getSelectedColumn();
-            System.out.println(statement);
-            String[] infoclase = new String[5];
-            try {
-                prepSt = conn.prepareStatement(statement);
-                rs = prepSt.executeQuery();
-                for(int i = 0; rs.next(); i++){
-                    infoclase[0] = rs.getString("ID");
-                    infoclase[1] = rs.getString("diasemana");
-                    infoclase[2] = rs.getString("hora");
-                    infoclase[3] = rs.getString("numeroalumnos");
-                    infoclase[4] = rs.getString("tematica");
-                }
-                prepSt.close();
+            List<String[]> list = dbconn.selectStatement(statement, TablasDB.clasesemanal);
+            String[] infoclase = list.get(0);
 
-                ViewerClaseSemanal VCS = new ViewerClaseSemanal();
-                VCS.setClase(infoclase);
-                VCS.setAlumnos();
-//                VCS.setAnotaciones();
-                VCS.setVCS(VCS);
-                VCS.setTabla(tablasemanal);
-                VCS.setVisible(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ViewerClaseSemanal VCS = new ViewerClaseSemanal();
+            VCS.setClase(infoclase);
+            VCS.setAlumnos();
+//            VCS.setAnotaciones();
+            VCS.setVCS(VCS);
+            VCS.setTabla(tablasemanal);
+            VCS.setVisible(true);
         }
     }//GEN-LAST:event_tablasemanalMouseClicked
 

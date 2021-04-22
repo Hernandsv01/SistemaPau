@@ -5,10 +5,7 @@
  */
 package proyecto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,13 +18,10 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
     ViewerClaseSemanal VCS;
     EditorClaseSemanal ECS;
     
-    private static String[] infoclase;
+    private String[] infoclase;
     DefaultTableModel model = new DefaultTableModel();
     private javax.swing.JTable tablasemanal;
     private final DBConnection dbconn = new DBConnection();
-    private final Connection conn;
-    private PreparedStatement prepSt = null;
-    private ResultSet rs;
 
     /**
      * Creates new form ViewerClaseSemanal
@@ -38,28 +32,25 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
         
         txtanotaciones.setEditable(false);
         
-        conn = dbconn.connection();
     }
     
     public void setClase(String infoclase[]){
-        ViewerClaseSemanal.infoclase = infoclase;
+        this.infoclase = infoclase;
     }
 
     public void setAlumnos(){
-        String statement = "SELECT * FROM `alumnos` WHERE `diaclase` = '" + infoclase[1] + "' AND `horaclase` = '" + infoclase[2] + "'";
-        System.out.println(statement);
-        try {
-            prepSt = conn.prepareStatement(statement);
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                String[] str = new String[1];
-                str[0] = rs.getString("Nombre");
-                model.addRow(str);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            PopupMessage pum = new PopupMessage(PopupType.ERROR);
-            pum.setVisible(true);
+        //Sets the list of Alumnos in the viewer
+        String statement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + infoclase[0] + "'";
+        List<String[]> listDNI = dbconn.selectStatement(statement, TablasDB.clasesalumnos);
+        for(int i = 0; i < listDNI.size(); i++){
+            String[] strDNI = listDNI.get(i);
+            
+            String selectst = "SELECT * FROM `alumnos` WHERE DNI = '" + strDNI[0] + "'";
+            List<String[]> listNames = dbconn.selectStatement(selectst, TablasDB.alumnos);
+            String[] strListAlu = listNames.get(0);
+            String[] strName = {strListAlu[1]};
+            
+            model.addRow(strName);
         }
         this.tablaalumnos.setModel(model);
     }
