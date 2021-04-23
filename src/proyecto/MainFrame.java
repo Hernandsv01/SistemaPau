@@ -5,11 +5,6 @@
  */
 package proyecto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,11 +19,8 @@ public class MainFrame extends javax.swing.JFrame {
     DefaultTableModel model4 = new DefaultTableModel();
     
     private final DBConnection dbconn = new DBConnection();
-    private final Connection conn;
     private final Alumno alumno = new Alumno();
     private final Clase clase = new Clase();
-    private PreparedStatement prepSt = null;
-    private ResultSet rs;
     
     
 
@@ -47,12 +39,8 @@ public class MainFrame extends javax.swing.JFrame {
         this.tablaalumnos.setModel(model2);
         tablaalumnos.setShowGrid(true);
         this.tablasemanal.setModel(model3);
-        String[] str = new String[0];
-        model3.addRow(str);
         tablasemanal.setShowGrid(true);
         this.tablaregistro.setModel(model4);
-        
-        conn = dbconn.connection();
     }
 
     /**
@@ -743,15 +731,22 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btntestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntestActionPerformed
-        String statement1 = "INSERT INTO `alumnos` VALUES ('PERSONA 1', '19', '1165417450', 'HERNANXDSV@GMAIL.COM', '00000001', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement2 = "INSERT INTO `alumnos` VALUES ('PERSONA 2', '19', '1165417451', 'HERNANXDSV@GMAIL.COM', '00000002', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement3 = "INSERT INTO `alumnos` VALUES ('PERSONA 3', '19', '1165417452', 'HERNANXDSV@GMAIL.COM', '00000003', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement4 = "INSERT INTO `alumnos` VALUES ('PERSONA 4', '19', '1165417453', 'HERNANXDSV@GMAIL.COM', '00000004', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement5 = "INSERT INTO `alumnos` VALUES ('PERSONA 5', '19', '1165417454', 'HERNANXDSV@GMAIL.COM', '00000005', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement6 = "INSERT INTO `alumnos` VALUES ('PERSONA 6', '19', '1165417455', 'HERNANXDSV@GMAIL.COM', '00000006', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement7 = "INSERT INTO `alumnos` VALUES ('PERSONA 7', '19', '1165417456', 'HERNANXDSV@GMAIL.COM', '00000007', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement8 = "INSERT INTO `alumnos` VALUES ('PERSONA 8', '19', '1165417457', 'HERNANXDSV@GMAIL.COM', '00000008', '2021/04/21', '1', null, null, 'Ninguna')";
-        String statement9 = "INSERT INTO `alumnos` VALUES ('PERSONA 9', '19', '1165417458', 'HERNANXDSV@GMAIL.COM', '00000009', '2021/04/21', '1', null, null, 'Ninguna')";
+        String statement1 = "INSERT INTO `alumnos` VALUES ('1', 'CLARA MARIA BUCHANAN', 'CLARAMB@GMAIL.COM', '1192467239', '41', '2021/04/22', '1')";
+        String statement2 = "INSERT INTO `alumnos` VALUES ('2', 'DELFI BLOCH', 'DELFIB@GMAIL.COM', '1192467239', '38', '2021/04/22', '0')";
+        String statement3 = "INSERT INTO `alumnos` VALUES ('3', 'NICOLE HAIRABETIAN', 'NICOLEH@GMAIL.COM', '1192467239', '30', '2021/04/22', '1')";
+        String statement4 = "INSERT INTO `alumnos` VALUES ('4', 'VALERIA GIOCONDO', 'VALERIAG@GMAIL.COM', '1192467239', '9', '2021/04/22', '0')";
+        String statement5 = "INSERT INTO `alumnos` VALUES ('5', 'FLORENCIA RUIZ', 'FLORENCIAR@GMAIL.COM', '1192467239', '32', '2021/04/22', '1')";
+        String statement6 = "INSERT INTO `alumnos` VALUES ('6', 'SILVINA ALONSO', 'SILVINAA@GMAIL.COM', '1192467239', '21', '2021/04/22', '1')";
+        String statement7 = "INSERT INTO `alumnos` VALUES ('7', 'KAREN MORAO', 'KARENM@GMAIL.COM', '1192467239', '29', '2021/04/22', '1')";
+        String statement8 = "INSERT INTO `alumnos` VALUES ('8', 'ANDREA LUCARELLI', 'ANDREAL@GMAIL.COM', '1192467239', '20', '2021/04/22', '0')";
+        String statement9 = "INSERT INTO `alumnos` VALUES ('9', 'JUAN IGNACIO ACCATTOLI', 'JUANIA@GMAIL.COM', '1192467239', '29', '2021/04/22', '1')";
+        
+        String statement10 = "INSERT INTO `alumnos` VALUES ('10', 'ANA LIA MARTINI', 'ANALIAM@GMAIL.COM', '1192467239', '12', '2021/04/22', '0')";
+        String statement11 = "INSERT INTO `alumnos` VALUES ('11', 'ROMINA BERARDI', 'ROMINAB@GMAIL.COM', '1192467239', '22', '2021/04/22', '1')";
+        String statement12 = "INSERT INTO `alumnos` VALUES ('12', 'CLAUDIA ROMERO', 'CLAUDIAR@GMAIL.COM', '1192467239', '35', '2021/04/22', '1')";
+        String statement13 = "INSERT INTO `alumnos` VALUES ('13', 'SANDRA ROMANUTTI', 'SANDRAR@GMAIL.COM', '1192467239', '50', '2021/04/22', '1')";
+        String statement14 = "INSERT INTO `alumnos` VALUES ('14', 'MARIA CRISTIANO', 'MARIAC@GMAIL.COM', '1192467239', '43', '2021/04/22', '0')";
+        String statement15 = "INSERT INTO `alumnos` VALUES ('15', 'JOACO SANTANGELO', 'JOACOS@GMAIL.COM', '1192467239', '22', '2021/04/22', '1')";
 
         dbconn.modificationStatement(statement1);
         dbconn.modificationStatement(statement2);
@@ -762,6 +757,12 @@ public class MainFrame extends javax.swing.JFrame {
         dbconn.modificationStatement(statement7);
         dbconn.modificationStatement(statement8);
         dbconn.modificationStatement(statement9);
+        dbconn.modificationStatement(statement10);
+        dbconn.modificationStatement(statement11);
+        dbconn.modificationStatement(statement12);
+        dbconn.modificationStatement(statement13);
+        dbconn.modificationStatement(statement14);
+        dbconn.modificationStatement(statement15);
     }//GEN-LAST:event_btntestActionPerformed
 
     private void btnagregaralumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregaralumnoActionPerformed
@@ -794,73 +795,23 @@ public class MainFrame extends javax.swing.JFrame {
         int row = tabladeresultados.getSelectedRow();
         String dni = (String)tabladeresultados.getValueAt(row, 1);
         
-//        String[] arrAlumno = new String[10];
         String statement = "SELECT * FROM `alumnos` WHERE dni = " + dni;
-//        System.out.println(statement);
-//        try {
-//            prepSt = conn.prepareStatement(statement);
-//            rs = prepSt.executeQuery();
-//            while(rs.next()){
-//                arrAlumno[0] = rs.getString("Nombre");
-//                arrAlumno[1] = rs.getString("DNI");
-//                arrAlumno[2] = rs.getString("Telefono");
-//                arrAlumno[3] = rs.getString("Mail");
-//                arrAlumno[4] = rs.getString("Edad");
-//                arrAlumno[5] = rs.getString("Estado");
-//                arrAlumno[6] = rs.getString("diaclase");
-//                if(arrAlumno[6] != null){
-//                    arrAlumno[6] = clase.setClassValue(arrAlumno[6]);
-//                }
-//                arrAlumno[7] = rs.getString("horaclase");
-//                arrAlumno[8] = rs.getString("FechaInicio");
-//                arrAlumno[9] = rs.getString("Comentarios");
-//                if(Integer.parseInt(arrAlumno[5]) == 0){
-//                    arrAlumno[5] = "Inactivo";
-//                }else{
-//                    arrAlumno[5] = "Activo";
-//                }
-//            }
-//            prepSt.close();
-//        } catch (NumberFormatException | SQLException e) {
-//            e.printStackTrace();
-//        }
-        
-        List<String[]> infoAlumno;
-        infoAlumno = dbconn.selectStatement(statement, TablasDB.alumnos);
-        
+        List<String[]> infoAlumno = dbconn.selectStatement(statement, TablasDB.alumnos);
+        if(Integer.parseInt(infoAlumno.get(0)[6]) == 0){
+            infoAlumno.get(0)[6] = "Inactivo";
+        }else{
+            infoAlumno.get(0)[6] = "Activo";
+        }
         
         String stselect = "SELECT * FROM `clasesemanal`";
-        String stcountrows = "SELECT COUNT(*) AS rowcount FROM `clasesemanal`";
-        String rowCount;
-        int intRowCount;
-        String[][] arrClases = new String[0][0];
-        
-        try {
-            prepSt = conn.prepareStatement(stcountrows);
-            rs = prepSt.executeQuery();
-            rs.next();
-            rowCount = rs.getString("rowcount");
-            intRowCount = Integer.parseInt(rowCount);
-            arrClases = new String[intRowCount][3];
-            String diaDB;
-            
-            prepSt = conn.prepareStatement(stselect);
-            rs = prepSt.executeQuery();
-            for(int i = 0; rs.next(); i++){
-                diaDB = rs.getString("diasemana");
-                arrClases[i][0] = clase.setClassValue(diaDB);
-                arrClases[i][1] = rs.getString("hora");
-                arrClases[i][2] = rs.getString("numeroalumnos");
-            }
-                    
-            prepSt.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        List<String[]> listClases = dbconn.selectStatement(stselect, TablasDB.clasesemanal);
+        for(int i = 0; i < listClases.size(); i++){
+            listClases.get(i)[1] = clase.setClassValue(listClases.get(i)[1]);
         }
         
         EditorAlumno EA = new EditorAlumno();
         EA.setEA(EA);
-        EA.setOpcionesClases(arrClases);
+        EA.setOpcionesClases(listClases);
         EA.setInfo(infoAlumno.get(0));
         EA.setBox();
         EA.setVisible(true);
@@ -875,88 +826,89 @@ public class MainFrame extends javax.swing.JFrame {
         alumno.setMail(txtmail.getText());
         alumno.setEdad((int)numedad.getValue());
         alumno.setEstado((String)boxestado.getSelectedItem());
-        try{
-            String statement = "SELECT * FROM `alumnos` ";
-            if(!"".equals(alumno.getNombre()) ||
-                !"".equals(alumno.getDNI()) ||
-                !"".equals(alumno.getTelefono()) ||
-                !"".equals(alumno.getMail()) ||
-                alumno.getEdad() != 0 ||
-                !"Seleccione".equals(alumno.getEstado())){
-                statement = statement + "WHERE ";
-                if(!"".equals(alumno.getNombre())){
-                    statement = statement + "`nombre` LIKE '" + alumno.getNombre() + "%' ";
-                    check = true;
-                }
-                if(!"".equals(alumno.getDNI())){
-                    if(check == true){
-                        statement += "AND ";
-                    }
-                    statement = statement + "`DNI` LIKE '" + alumno.getDNI() + "%' ";
-                    check = true;
-                }
-                if(!"".equals(alumno.getTelefono())){
-                    if(check == true){
-                        statement += "AND ";
-                    }
-                    statement = statement + "`Telefono` LIKE '" + alumno.getTelefono() + "%' ";
-                    check = true;
-                }
-                if(!"".equals(alumno.getMail())){
-                    if(check == true){
-                        statement += "AND ";
-                    }
-                    statement = statement + "`Mail` LIKE '" + alumno.getMail() + "%' ";
-                    check = true;
-                }
-                if(alumno.getEdad() != 0){
-                    if(check == true){
-                        statement += "AND ";
-                    }
-                    String operador;
-                    if("Igual a".equals(boxoperador.getSelectedItem())){
-                        operador = "=";
-                    }else if("Mayor a".equals(boxoperador.getSelectedItem())){
-                        operador = ">";
-                    }else{
-                        operador = "<";
-                    }
-                    statement = statement + "`Edad` " + operador +  " '" + alumno.getEdad() + "' ";
-                    check = true;
-                }
-                if(!"Seleccione".equals(alumno.getEstado())){
-                    if(check == true){
-                        statement += "AND ";
-                    }
-                    if("Activo".equals(alumno.getEstado())){
-                        statement = statement + "`Estado` = 1 ";
-                    }else{
-                        statement = statement + "`Estado` = 0 ";
-                    }
-                }
+        
+        //Check if any parameter is settled
+        String statement = "SELECT * FROM `alumnos` ";
+        if(!"".equals(alumno.getNombre()) ||
+            !"".equals(alumno.getDNI()) ||
+            !"".equals(alumno.getTelefono()) ||
+            !"".equals(alumno.getMail()) ||
+            alumno.getEdad() != 0 ||
+            !"Seleccione".equals(alumno.getEstado())){
+
+            statement = statement + "WHERE ";
+            if(!"".equals(alumno.getNombre())){
+                statement = statement + "`nombre` LIKE '" + alumno.getNombre() + "%' ";
+                check = true;
             }
-            System.out.println(statement);
-            prepSt = conn.prepareStatement(statement);
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                String nombre = rs.getString("Nombre");
-                String DNI = rs.getString("DNI");
-                String telefono = rs.getString("Telefono");
-                String mail = rs.getString("Mail");
-                String edad = rs.getString("Edad");
-                String estado = rs.getString("Estado");
-                if(Integer.parseInt(estado) == 0){
-                    estado = "Inactivo";
+            if(!"".equals(alumno.getDNI())){
+                if(check == true){
+                    statement += "AND ";
+                }
+                statement = statement + "`DNI` LIKE '" + alumno.getDNI() + "%' ";
+                check = true;
+            }
+            if(!"".equals(alumno.getTelefono())){
+                if(check == true){
+                    statement += "AND ";
+                }
+                statement = statement + "`Telefono` LIKE '" + alumno.getTelefono() + "%' ";
+                check = true;
+            }
+            if(!"".equals(alumno.getMail())){
+                if(check == true){
+                    statement += "AND ";
+                }
+                statement = statement + "`Mail` LIKE '" + alumno.getMail() + "%' ";
+                check = true;
+            }
+            if(alumno.getEdad() != 0){
+                if(check == true){
+                    statement += "AND ";
+                }
+                String operador;
+                if("Igual a".equals(boxoperador.getSelectedItem())){
+                    operador = "=";
+                }else if("Mayor a".equals(boxoperador.getSelectedItem())){
+                    operador = ">";
                 }else{
-                    estado = "Activo";
+                    operador = "<";
                 }
-                String[] resalumno = {nombre, DNI, telefono, mail, edad, estado};
-                model1.addRow(resalumno);
+                statement = statement + "`Edad` " + operador +  " '" + alumno.getEdad() + "' ";
+                check = true;
             }
-            prepSt.close();
+            if(!"Seleccione".equals(alumno.getEstado())){
+                if(check == true){
+                    statement += "AND ";
+                }
+                if("Activo".equals(alumno.getEstado())){
+                    statement = statement + "`Estado` = 1 ";
+                }else{
+                    statement = statement + "`Estado` = 0 ";
+                }
+            }
         }
-        catch(NumberFormatException | SQLException e){
-            e.printStackTrace();
+        List<String[]> list = dbconn.selectStatement(statement, TablasDB.alumnos);
+        for(int i = 0; i < list.size(); i++){
+            String[] str = list.get(i);
+            String[] swapped1 = swap(str[0], str[1]);
+            str[0] = swapped1[0];
+            str[1] = swapped1[1];
+            String[] swapped2 = swap(str[2], str[3]);
+            str[2] = swapped2[0];
+            str[3] = swapped2[1];
+            String[] swapped3 = swap(str[5], str[6]);
+            str[5] = swapped3[0];
+            str[6] = swapped3[1];
+
+            if("1".equals(str[5])){
+                str[5] = "Activo";
+            }else{
+                str[5] = "Inactivo";
+            }
+            str[6] = null;
+
+            model1.addRow(str);
         }
     }//GEN-LAST:event_btnbuscarActionPerformed
 
@@ -966,30 +918,18 @@ public class MainFrame extends javax.swing.JFrame {
             model2.removeRow(i);
         }
         String statement = "SELECT * FROM `alumnos`";
-        try {
-            System.out.println(statement);
-            prepSt = conn.prepareStatement(statement);
-            rs = prepSt.executeQuery();
-            while(rs.next()){
-                String nombre = rs.getString("Nombre");
-                String DNI = rs.getString("DNI");
-                String telefono = rs.getString("Telefono");
-                String mail = rs.getString("Mail");
-                String edad = rs.getString("Edad");
-                String estado = rs.getString("Estado");
-                String fechainicio = rs.getString("FechaInicio");
-                String comentarios = rs.getString("Comentarios");
-                if(Integer.parseInt(estado) == 0){
-                    estado = "Inactivo";
-                }else{
-                    estado = "Activo";
-                }
-                String[] resalumno = {nombre, DNI, telefono, mail, edad, estado, fechainicio, comentarios};
-                model2.addRow(resalumno);
+        List<String[]> list = dbconn.selectStatement(statement, TablasDB.alumnos);
+        for(int i = 0; i < list.size(); i++){
+            String[] str = list.get(i);
+            String[] swapped = swap(str[0], str[1]);
+            str[0] = swapped[0];
+            str[1] = swapped[1];
+            if(Integer.parseInt(list.get(i)[6]) == 0){
+                list.get(i)[6] = "Inactivo";
+            }else{
+                list.get(i)[6] = "Activo";
             }
-            prepSt.close();
-        } catch (NumberFormatException | SQLException e) {
-            e.printStackTrace();
+            model2.addRow(list.get(i));
         }
     }//GEN-LAST:event_btnactualizaralumnosActionPerformed
 
@@ -1123,14 +1063,27 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tablasemanalMouseClicked
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        String statement = "TRUNCATE TABLE `alumnos`";
-        dbconn.modificationStatement(statement);
+        for(int i = 1; i < 16; i++){
+            String selstatement = "SELECT * FROM `alumnos` WHERE `DNI` = " + i;
+            List<String[]> list = dbconn.selectStatement(selstatement, TablasDB.alumnos);
+            String[] str = list.get(0);
+            String updstatement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = '" + str[0] + "'";
+            dbconn.modificationStatement(updstatement);
+        }
     }//GEN-LAST:event_btnresetActionPerformed
 
     private void btnagregarregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarregistroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnagregarregistroActionPerformed
 
+    private String[] swap(String a, String b){
+        a = a + b;  
+        b = a.substring(0, a.length() - b.length());  
+        a = a.substring(b.length());
+        String[] str = {a, b};
+        return str;
+    }
+    
     private void initModelConsultaAlumno(){
         model1.addColumn("Nombre");
         model1.addColumn("DNI");
@@ -1142,12 +1095,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void initModelListaAlumno(){
         model2.addColumn("Nombre");
         model2.addColumn("DNI");
-        model2.addColumn("Telefono");
         model2.addColumn("Mail");
+        model2.addColumn("Telefono");
         model2.addColumn("Edad");
-        model2.addColumn("Estado");
         model2.addColumn("Fecha inicio");
-        model2.addColumn("Observaciones");
+        model2.addColumn("Estado");
     }
     private void initModelListaSemanal(){
         model3.addColumn("Lunes");
