@@ -23,6 +23,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     
     private boolean changedID = false;
     private String newID;
+    private List<String[]> clasesalumnos;
     
     private String[] boxInfo;
     
@@ -149,10 +150,133 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaplicarActionPerformed
-        checkAndChangeClase();
-        if(changedID){
-            checkAndChangeClasesAlumnos();
+        boolean first = true;
+        boolean diaCambiado = false;
+        boolean horaCambiada = false;
+        int newNum = Integer.parseInt(numclase.getValue().toString());
+        String newDia = boxdia.getSelectedItem().toString();
+        String newDiaDB = clase.setDBValue(newDia);
+        
+        //Formar String con valores cambiados
+        String statement = "UPDATE `clasesemanal` SET ";
+        
+        if(!txthorario.getText().equals(horario)){
+            if(!first){
+                statement += ", ";
+            }
+            statement += "`hora` = '" + txthorario.getText().toUpperCase() + "' ";
+            first = false;
+            horaCambiada = true;
         }
+        if(!boxdia.getSelectedItem().toString().equals(clase.setClassValue(diasemana))){
+            String diaDB1 = clase.setDBValue(boxdia.getSelectedItem().toString());
+            if(!first){
+                statement += ", ";
+            }
+            statement += "`diasemana` = '" + diaDB1 + "' ";
+            first = false;
+            diaCambiado = true;
+        }
+        if(!numclase.getValue().toString().equals(numero)){
+            
+            if(!first){
+                statement += ", ";
+            }
+            statement += "`Numero` = '" + newNum + "' ";
+            first = false;
+        }
+        if(!txttematica.getText().equals(tematica)){
+            if(!first){
+                statement += ", ";
+            }
+            statement += "`tematica` = '" + txttematica.getText().toUpperCase() + "' ";
+            first = false;
+        }
+        //Chequear si cambia el ID y borrar de clasealumnos
+        if(horaCambiada || diaCambiado){
+            if(!first){
+                statement += ", ";
+            }
+            String[] doselementos = txthorario.getText().split(":");
+            newID = clase.generateClassID(boxdia.getSelectedItem().toString(), doselementos[0], doselementos[1]);
+            statement += "`ID` = '" + newID + "' ";
+            
+            String selstatement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + ID + "'";
+            clasesalumnos = dbconn.selectStatement(selstatement, TablasDB.clasesalumnos);
+            String delstatement = "DELETE FROM `clasesalumnos` WHERE `id_clase` = '" + ID + "'";
+            dbconn.modificationStatement(delstatement);
+            
+            changedID = true;
+        }
+        statement += "WHERE `clasesemanal`.`diasemana` = '" + diasemana + "' AND `clasesemanal`.`hora` = '" + horario + "'";
+        
+        //Chequear que haya algún cambio y que no superponga otra clase
+        try{
+            if(first){
+                System.out.println("NO HUBIERON CAMBIOS - ERROR");
+                PopupMessage pum = new PopupMessage(PopupType.ERROR);
+                pum.setVisible(true);
+                throw new RuntimeException();
+            }
+            List<String[]> listClase = dbconn.selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
+            for(int i = 0; i < listClase.size(); i++){
+                String[] str = listClase.get(i);
+                if(newDiaDB.equals(str[1]) && txthorario.getText().equals(str[2]) && numclase.getValue().toString().equals(str[3])){
+                    System.out.println("CLASE YA EXISTE - ERROR");
+                    PopupMessage pum = new PopupMessage(PopupType.ERROR);
+                    pum.setVisible(true);
+                    throw new RuntimeException();
+                }
+            }
+            
+            dbconn.modificationStatement(statement);
+            PopupMessage pum = new PopupMessage(PopupType.C_EDITADA);
+            pum.setVisible(true);
+            
+        }catch(RuntimeException e){
+            e.printStackTrace();
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
+            pum.setVisible(true);
+        }
+        
+        //Volver a agregar clases a clasesalumnos
+        if(changedID){
+            for(int i = 0; i < clasesalumnos.size(); i++){
+                String[] str = clasesalumnos.get(i);
+                String instatement = "INSERT INTO `clasesalumnos` VALUES ('" + str[0] + "', '" + newID + "')";
+                dbconn.modificationStatement(instatement);
+            }
+        }
+        
+        //Chequear que celdas no estén ocupadas en tabla
+        int newNumTableValue = newNum-1;
+        try{
+            while(tablasemanal.getValueAt(newNumTableValue, Integer.parseInt(newDiaDB)) != null){
+                System.out.println("Cell not null values:");
+                System.out.println("    Row: " + newNumTableValue);
+                System.out.println("    Column: " + newDiaDB);
+                
+                String[] doselementos = tablasemanal.getValueAt(newNumTableValue, Integer.parseInt(newDiaDB)).toString().split(" - ");
+                List<String[]> claseToChange = dbconn.selectStatement("SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + newDiaDB + "' AND `Hora` = '" + doselementos[0] + "'", TablasDB.clasesemanal);
+                String[] str = claseToChange.get(0);
+                String diasemana1 = str[1];
+                String horavieja = str[2];
+                String num = str[3];
+
+                int newNumClase = Integer.parseInt(num)+1;
+
+                String stupdate = "UPDATE `clasesemanal` SET `Numero` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = '" + diasemana1 + "' AND `clasesemanal`.`hora` = '" + horavieja + "'";
+                dbconn.modificationStatement(stupdate);
+
+                newNum++;
+                newNumTableValue++;
+            }
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }catch(IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
+        }
+        
         dispose();
         VCS.dispose();
     }//GEN-LAST:event_btnaplicarActionPerformed
@@ -162,6 +286,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
         cm.setECS(ECS);
         cm.setVCS(VCS);
         cm.setClase(diasemana, horario);
+        cm.setType(ConfirmType.clasealumno);
         cm.setVisible(true);
     }//GEN-LAST:event_btneliminarActionPerformed
 
@@ -247,123 +372,6 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     public void setTabla(JTable tablasemanal) {
         this.tablasemanal = tablasemanal;
         }
-    
-    public void checkAndChangeClasesAlumnos(){
-        String statement = "UPDATE `clasesalumnos` SET `id_clase` = '" + newID + "' WHERE `id_clase` = '" + ID + "'";
-        dbconn.modificationStatement(statement);
-    }
-    
-    public void checkAndChangeClase(){
-        boolean first = true;
-        boolean diaCambiado = false;
-        boolean horaCambiada = false;
-        int newNum = Integer.parseInt(numclase.getValue().toString());
-        String newDia = boxdia.getSelectedItem().toString();
-        String newDiaDB = clase.setDBValue(newDia);
-        
-        //Formar String con valores cambiados
-        String statement = "UPDATE `clasesemanal` SET ";
-        
-        if(!txthorario.getText().equals(horario)){
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`hora` = '" + txthorario.getText().toUpperCase() + "' ";
-            first = false;
-            horaCambiada = true;
-        }
-        if(!boxdia.getSelectedItem().toString().equals(clase.setClassValue(diasemana))){
-            String diaDB1 = clase.setDBValue(boxdia.getSelectedItem().toString());
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`diasemana` = '" + diaDB1 + "' ";
-            first = false;
-            diaCambiado = true;
-        }
-        if(!numclase.getValue().toString().equals(numero)){
-            
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`id` = '" + newNum + "' ";
-            first = false;
-        }
-        if(!txttematica.getText().equals(tematica)){
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`tematica` = '" + txttematica.getText().toUpperCase() + "' ";
-            first = false;
-        }
-        if(horaCambiada || diaCambiado){
-            if(!first){
-                statement += ", ";
-            }
-            String[] doselementos = txthorario.getText().split(":");
-            newID = clase.generateClassID(boxdia.getSelectedItem().toString(), doselementos[0], doselementos[1]);
-            statement += "`ID` = '" + newID + "' ";
-            changedID = true;
-        }
-        statement += "WHERE `clasesemanal`.`diasemana` = '" + diasemana + "' AND `clasesemanal`.`hora` = '" + horario + "'";
-        
-        //Chequear que hayan algún cambio y que no superponga otra clase
-        try{
-            if(first){
-                System.out.println("NO HUBIERON CAMBIOS - ERROR");
-                PopupMessage pum = new PopupMessage(PopupType.ERROR);
-                pum.setVisible(true);
-                throw new RuntimeException();
-            }
-            List<String[]> list = dbconn.selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
-            for(int i = 0; i < list.size(); i++){
-                String[] str = list.get(i);
-                if(newDiaDB.equals(str[1]) && txthorario.getText().equals(str[2]) && numclase.getValue().toString().equals(str[3])){
-                    System.out.println("CLASE YA EXISTE - ERROR");
-                    PopupMessage pum = new PopupMessage(PopupType.ERROR);
-                    pum.setVisible(true);
-                    throw new RuntimeException();
-                }
-            }
-            
-            dbconn.modificationStatement(statement);
-            PopupMessage pum = new PopupMessage(PopupType.C_EDITADA);
-            pum.setVisible(true);
-            
-        }catch(RuntimeException e){
-            e.printStackTrace();
-            PopupMessage pum = new PopupMessage(PopupType.ERROR);
-            pum.setVisible(true);
-        }
-        
-        //Chequear que celdas no estén ocupadas en tabla
-        int newNumTableValue = newNum-1;
-        try{
-            while(tablasemanal.getValueAt((newNumTableValue), Integer.parseInt(newDiaDB)) != null){
-                System.out.println("Cell not null values:");
-                System.out.println("    Row: " + newNumTableValue);
-                System.out.println("    Column: " + newDiaDB);
-                
-                List<String[]> list = dbconn.selectStatement("SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + newDiaDB + "' AND `id` = '" + newNum + "'", TablasDB.clasesemanal);
-                String[] str = list.get(0);
-                String diasemana1 = str[1];
-                String horavieja = str[2];
-                String num = str[3];
-
-                int newNumClase = Integer.parseInt(num)+1;
-
-                String stupdate = "UPDATE `clasesemanal` SET `Numero` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = '" + diasemana1 + "' AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                dbconn.modificationStatement(stupdate);
-
-                newNum++;
-                newNumTableValue++;
-            }
-        }catch(NumberFormatException e){
-            e.printStackTrace();
-        }catch(IndexOutOfBoundsException e){
-            System.out.println(e.getMessage());
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxdia;

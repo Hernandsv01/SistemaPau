@@ -14,10 +14,11 @@ public class ConfirmMessage extends javax.swing.JFrame {
     private String dia;
     private String hora;
     private String dni;
+    private String ID;
     private EditorAlumno EA;
     private ViewerClaseSemanal VCS;
     private EditorClaseSemanal ECS;
-    private int type;
+    private ConfirmType type;
     private final DBConnection dbconn;
     
     /**
@@ -25,7 +26,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
      */
     public ConfirmMessage() {
         initComponents();
-        this.dbconn = new DBConnection();
+        dbconn = new DBConnection();
     }
     
     public void setDNI(String dni){
@@ -49,8 +50,12 @@ public class ConfirmMessage extends javax.swing.JFrame {
         this.hora = hora;
     }
     
-    public void setType(int type){
+    public void setType(ConfirmType type){
         this.type = type;
+    }
+    
+    public void setIDClase(String ID){
+        this.ID = ID;
     }
     
     /**
@@ -118,25 +123,31 @@ public class ConfirmMessage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaceptarActionPerformed
-        if(type == 1){
-            String statement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
-            dbconn.modificationStatement(statement);
-            
-            dispose();
-            EA.dispose();
-
-            PopupMessage pum = new PopupMessage(PopupType.A_ELIMINADO);
-            pum.setVisible(true);
-        }else{
-            String statement = "DELETE FROM `clasesemanal` WHERE `clasesemanal`.`hora` = '" + hora + "' AND `clasesemanal`.`diasemana` = '" + dia + "'";
-            dbconn.modificationStatement(statement);
-            
-            dispose();
-            VCS.dispose();
-            ECS.dispose();
-
-            PopupMessage pum = new PopupMessage(PopupType.C_ELIMINADA);
-            pum.setVisible(true);
+        switch (type) {
+            case alumno:{
+                String statement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
+                dbconn.modificationStatement(statement);
+                dispose();
+                EA.dispose();
+                PopupMessage pum = new PopupMessage(PopupType.A_ELIMINADO);
+                pum.setVisible(true);
+                    break;
+                }
+            case clase:{
+                String statement = "DELETE FROM `clasesemanal` WHERE `clasesemanal`.`hora` = '" + hora + "' AND `clasesemanal`.`diasemana` = '" + dia + "'";
+                dbconn.modificationStatement(statement);
+                dispose();
+                VCS.dispose();
+                ECS.dispose();
+                PopupMessage pum = new PopupMessage(PopupType.C_ELIMINADA);
+                pum.setVisible(true);
+                    break;
+                }
+            case clasealumno:
+                String statement = "DELETE FROM `clasesalumnos` WHERE `dni_alumno` = '" + dni + "' AND `id_clase` = '" + ID + "'";
+                dbconn.modificationStatement(statement);
+                dispose();
+                break;
         }
     }//GEN-LAST:event_btnaceptarActionPerformed
 

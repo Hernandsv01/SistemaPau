@@ -3,7 +3,6 @@ package proyecto;
 public class Clase {
     
     public String setDBValue(String value){
-        System.out.println("Value received: " + value);
         String returnValue = "";
         switch(value){
             case "Lunes":
@@ -25,12 +24,10 @@ public class Clase {
                 returnValue = "5";
                 break;
         }
-        System.out.println("Value returned: " + returnValue);
         return returnValue;
     }
     
     public String setClassValue(String value){
-        System.out.println("Value Received: " + value);
         String returnValue = "";
         switch(value){
             case "0":
@@ -52,7 +49,6 @@ public class Clase {
                 returnValue = "Sabado";
                 break;
         }
-        System.out.println("Value returned: " + returnValue);
         return returnValue;
     }
     

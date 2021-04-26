@@ -7,5 +7,6 @@ public enum PopupType {
     A_AGREGADO,
     C_AGREGADA,
     C_EDITADA,
-    C_ELIMINADA
+    C_ELIMINADA,
+    A_NO_ACTUALIZADO
 }

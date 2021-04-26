@@ -811,9 +811,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         EditorAlumno EA = new EditorAlumno();
         EA.setEA(EA);
-        EA.setOpcionesClases(listClases);
         EA.setInfo(infoAlumno.get(0));
-        EA.setBox();
+        EA.setClasesAlumno();
+        EA.setOpcionesClases(listClases);
+        EA.setAnotaciones();
         EA.setVisible(true);
 
     }//GEN-LAST:event_tabladeresultadosMouseClicked
@@ -1020,11 +1021,17 @@ public class MainFrame extends javax.swing.JFrame {
         List<String[]> list = dbconn.selectStatement(statement, TablasDB.clasesemanal);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
+            String id = str[0];
             String diasemana = str[1];
             String hora = str[2];
             String num = str[3];
             String cantidad = str[4];
             
+            //Updates number of Alumnos in every class
+            String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + id + "') WHERE `ID` = '" + id + "'";
+            dbconn.modificationStatement(updstatement);
+            
+            //Add the rows
             int diasemanaInt = Integer.parseInt(diasemana);
             int numDBValue = Integer.parseInt(num)-1;
             int numeroUltimaFila = tablasemanal.getRowCount()-1;
@@ -1038,7 +1045,6 @@ public class MainFrame extends javax.swing.JFrame {
                 model3.setValueAt(hora + " - Ver Alumnos(" + cantidad + ")", numDBValue, diasemanaInt);
             }
         }
-        
     }//GEN-LAST:event_btnactualizarclasesActionPerformed
 
     private void btnactualizarregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarregistroActionPerformed

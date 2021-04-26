@@ -25,6 +25,11 @@ public class PopupMessage extends javax.swing.JFrame {
                 text.setForeground(Color.red);
                 text.setFont(text.getFont().deriveFont(32.0f));
                 break;
+            case A_NO_ACTUALIZADO:
+                text.setText("Nada que actualizar");
+                text.setForeground(Color.green);
+                text.setFont(text.getFont().deriveFont(18.0f));
+                break;
             case A_ACTUALIZADO:
                 text.setText("Alumno actualizado con exito");
                 text.setForeground(Color.green);

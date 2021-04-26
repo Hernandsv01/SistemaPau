@@ -5,11 +5,9 @@
  */
 package proyecto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,22 +15,19 @@ import java.util.List;
  */
 public class EditorAlumno extends javax.swing.JFrame {
     
-    private static String nombre;
     private static String dni;
-    private static String telefono;
+    private static String nombre;
     private static String mail;
+    private static String telefono;
     private static String edad;
     private static String fechainicio;
     private static String estado;
-    private static String diaclase;
-    private static String horaclase;
-    private static String anotaciones;
+    private static String[] anotaciones;
+    private static List<String[]> listClases = new ArrayList();
     javax.swing.DefaultComboBoxModel boxclasemodel;
+    DefaultTableModel model = new DefaultTableModel();
     private static String exboxitem;
     private final DBConnection dbconn = new DBConnection();
-    private final Connection conn;
-    private ResultSet rs;
-    private PreparedStatement prepSt;
     Clase clase = new Clase();
     EditorAlumno EA;
 
@@ -41,7 +36,8 @@ public class EditorAlumno extends javax.swing.JFrame {
      */
     public EditorAlumno() {
         initComponents();
-        conn = dbconn.connection();
+        initModelClasesAlumno();
+        tablaclasesalumno.setModel(model);
     }
     
     public void setEA(EditorAlumno EA){
@@ -79,6 +75,9 @@ public class EditorAlumno extends javax.swing.JFrame {
         btneliminar = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         boxclase = new javax.swing.JComboBox<>();
+        btnagregar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaclasesalumno = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -138,7 +137,45 @@ public class EditorAlumno extends javax.swing.JFrame {
 
         jLabel22.setText("Clase");
 
-        boxclase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguna" }));
+        boxclase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de clases" }));
+
+        btnagregar.setText("Agregar");
+        btnagregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregarActionPerformed(evt);
+            }
+        });
+
+        tablaclasesalumno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tablaclasesalumno.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Clase"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaclasesalumno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaclasesalumnoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaclasesalumno);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,58 +216,77 @@ public class EditorAlumno extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(boxclase, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30))
+                        .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(boxclase, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnagregar)
+                                .addGap(104, 104, 104))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(btnvolver)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtalumno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxclase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtfechainicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(124, 124, 124)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtalumno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(222, 222, 222)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(124, 124, 124)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(numedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtfechainicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(boxestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(boxclase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnagregar))))
                 .addGap(24, 24, 24))
         );
 
@@ -299,72 +355,12 @@ public class EditorAlumno extends javax.swing.JFrame {
             }
             first = false;
         }
-        if(!boxclase.getSelectedItem().toString().equals(diaclase + " - " + horaclase)){
-            if(!first){
-                statement += ", ";
-            }
-            String diaDB = "null";
-            String[] doselementos = {"null", "null"};
-            if(!"Ninguna".equals(boxclase.getSelectedItem().toString())){
-                doselementos = (boxclase.getSelectedItem().toString()).split(" - ");
-                diaDB = clase.setDBValue(doselementos[0]);
-                
-                statement += "`diaclase` = '" + diaDB + "', `horaclase` = '" + doselementos[1] + "' ";
-            }else{
-                statement += "`diaclase` = null, `horaclase` = null ";
-            }
-            first = false;
-            
-            
-            int intnumeroalumnosau;
-            String stnumeroalumnosau = null;
-            int intnumeroalumnosdis;
-            String stnumeroalumnosdis = null;
-            try{
-                if(!"null".equals(doselementos[1])){
-                    String selectstatementau = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `hora` = '" + doselementos[1] + "'";
-                    System.out.println(selectstatementau);
-                    prepSt = conn.prepareStatement(selectstatementau);
-                    rs = prepSt.executeQuery();
-                    while(rs.next()){
-                        stnumeroalumnosau = rs.getString("numeroalumnos");
-                    }
-                    intnumeroalumnosau = Integer.parseInt(stnumeroalumnosau);
-                    intnumeroalumnosau++;
-                    String updatestatementau = "UPDATE `clasesemanal` SET `numeroalumnos` = '" + intnumeroalumnosau + "' WHERE `diasemana` = '" + diaDB + "' AND `hora` = '" + doselementos[1] + "'";
-                    dbconn.modificationStatement(updatestatementau);
-                }
-                
-                if(!"Ninguna".equals(exboxitem)){
-                    diaDB = clase.setDBValue(diaclase);
-                    String selectstatementdis = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `hora` = '" + horaclase + "'";
-                    System.out.println(selectstatementdis);
-                    prepSt = conn.prepareStatement(selectstatementdis);
-                    rs = prepSt.executeQuery();
-                    while(rs.next()){
-                        stnumeroalumnosdis = rs.getString("numeroalumnos");
-                    }
-                    intnumeroalumnosdis = Integer.parseInt(stnumeroalumnosdis);
-                    intnumeroalumnosdis--;
-                    String updatestatementdis = "UPDATE `clasesemanal` SET `numeroalumnos` = '" + intnumeroalumnosdis + "' WHERE `diasemana` = '" + diaDB + "' AND `hora` = '" + horaclase + "'";
-                    dbconn.modificationStatement(updatestatementdis);
-                }
-                
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-            
-            
-        }
-        if(!txtanotaciones.getText().equals(anotaciones)){
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`comentarios` = '" + txtanotaciones.getText() + "' ";
-        }
         statement += "WHERE `alumnos`.`DNI` = " + dni;
-        
-        if(!dbconn.modificationStatement(statement) || first){
+        if(first){
+            PopupMessage pum = new PopupMessage(PopupType.A_NO_ACTUALIZADO);
+            pum.setVisible(true);
+            dispose();
+        }else if(!dbconn.modificationStatement(statement)){
             PopupMessage pum = new PopupMessage(PopupType.ERROR);
             pum.setVisible(true);
         }else{
@@ -372,15 +368,13 @@ public class EditorAlumno extends javax.swing.JFrame {
             pum.setVisible(true);
             dispose();
         }
-        
-        
     }//GEN-LAST:event_btnaplicarActionPerformed
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
         ConfirmMessage cm = new ConfirmMessage();
         cm.setEA(EA);
         cm.setDNI(dni);
-        cm.setType(1);
+        cm.setType(ConfirmType.alumno);
         cm.setVisible(true);
     }//GEN-LAST:event_btneliminarActionPerformed
 
@@ -392,6 +386,14 @@ public class EditorAlumno extends javax.swing.JFrame {
             boxclase.setEnabled(true);
         }
     }//GEN-LAST:event_boxestadoActionPerformed
+
+    private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnagregarActionPerformed
+
+    private void tablaclasesalumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaclasesalumnoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaclasesalumnoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -455,26 +457,55 @@ public class EditorAlumno extends javax.swing.JFrame {
         }
     }
     
-    public void setOpcionesClases(List<String[]> listClases) {
-        boxclasemodel = new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguna" });
+    public void setOpcionesClases(List<String[]> listaClases) {
+        boxclasemodel = new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista de clases" });
         boxclase.setModel(boxclasemodel);
         String itembox;
-        for (String[] listClase : listClases) {
+        for (String[] listClase : listaClases) {
             itembox = listClase[1] + " - " + listClase[2];
             if (boxclasemodel.getIndexOf(itembox) == -1) {
                 boxclase.addItem(itembox);
             }
         }
+        // SACAR CLASES YA PUESTAS
+        if(listClases != null){
+            for(int i = 0; i < listClases.size(); i++){
+                String[] str = listClases.get(i);
+                itembox = str[1] + " - " + str[2];
+                boxclase.removeItem(itembox);
+            }
+        }
     }
-    public void setBox(){
-        boxclase.setSelectedItem(diaclase + " - " + horaclase);
-        System.out.println("Setting box: " + diaclase + " - " + horaclase);
-        exboxitem = boxclase.getSelectedItem().toString();
+    public void setClasesAlumno(){
+        String statement1 = "SELECT * FROM `clasesalumnos` WHERE `dni_alumno` = '" + dni + "'";
+        List<String[]> list = dbconn.selectStatement(statement1, TablasDB.clasesalumnos);
+        for(int i = 0; i < list.size(); i++){
+            String[] str1 = list.get(i);
+            
+            String statement2 = "SELECT * FROM `clasesemanal` WHERE `ID` = '" + str1[1] + "'";
+            List<String[]> list2 = dbconn.selectStatement(statement2, TablasDB.clasesemanal);
+            listClases.add(list2.get(0));
+            String[] str2 = list2.get(0);
+            
+            String[] item = new String[1];
+            str2[1] = clase.setClassValue(str2[1]);
+            item[0] = str2[1] + " - " + str2[2];
+            model.addRow(item);
+        }
+    }
+    public void setAnotaciones(){
+        
+    }
+    
+    private void initModelClasesAlumno(){
+        model.addColumn("Clase");
+        tablaclasesalumno.setRowHeight(20);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxclase;
     private javax.swing.JComboBox<String> boxestado;
+    private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnaplicar;
     private javax.swing.JButton btneliminar;
     private javax.swing.JButton btnvolver;
@@ -487,8 +518,10 @@ public class EditorAlumno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSpinner numedad;
+    private javax.swing.JTable tablaclasesalumno;
     private javax.swing.JTextField txtalumno;
     private javax.swing.JTextArea txtanotaciones;
     private javax.swing.JTextField txtdni;
