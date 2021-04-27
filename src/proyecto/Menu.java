@@ -13,9 +13,9 @@ import java.awt.Color;
  */
 public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Menu
-     */
+    private ClaseFrame CF;
+    private AlumnoFrame AF;
+    
     public Menu() {
         initComponents();
         getContentPane().setBackground(new Color(247,247,247));
@@ -31,8 +31,8 @@ public class Menu extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnalumnos = new javax.swing.JButton();
+        btnclases = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(Color.WHITE);
@@ -41,11 +41,21 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/WhatsApp Image 2021-04-21 at 16.39.07.jpg"))); // NOI18N
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setText("Alumnos");
+        btnalumnos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnalumnos.setText("Alumnos");
+        btnalumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnalumnosActionPerformed(evt);
+            }
+        });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("Clases");
+        btnclases.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnclases.setText("Clases");
+        btnclases.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclasesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -53,9 +63,9 @@ public class Menu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnclases, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnalumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -63,18 +73,28 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)))
+                    .addComponent(btnalumnos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnclases, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnclasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclasesActionPerformed
+        CF = new ClaseFrame();
+        CF.setVisible(true);
+    }//GEN-LAST:event_btnclasesActionPerformed
+
+    private void btnalumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnalumnosActionPerformed
+        AF = new AlumnoFrame();
+        AF.setVisible(true);
+    }//GEN-LAST:event_btnalumnosActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main2(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -107,8 +127,8 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnalumnos;
+    private javax.swing.JButton btnclases;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
