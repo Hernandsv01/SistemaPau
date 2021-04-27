@@ -7,6 +7,7 @@ package proyecto;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,13 +24,14 @@ public class EditorAlumno extends javax.swing.JFrame {
     private static String fechainicio;
     private static String estado;
     private static String[] anotaciones;
-    private static List<String[]> listClases = new ArrayList();
-    javax.swing.DefaultComboBoxModel boxclasemodel;
-    DefaultTableModel model = new DefaultTableModel();
+    private List<String[]> listClases = new ArrayList();
+    private static int claseSeleccionada;
+    private DefaultComboBoxModel boxclasemodel;
+    private DefaultTableModel model = new DefaultTableModel();
     private static String exboxitem;
     private final DBConnection dbconn = new DBConnection();
-    Clase clase = new Clase();
-    EditorAlumno EA;
+    private Clase clase = new Clase();
+    private EditorAlumno EA;
 
     /**
      * Creates new form EditorAlumno
@@ -382,17 +384,53 @@ public class EditorAlumno extends javax.swing.JFrame {
         if("Inactivo".equals(boxestado.getSelectedItem().toString())){
             boxclase.setSelectedIndex(0);
             boxclase.setEnabled(false);
+            btnagregar.setEnabled(false);
         }else{
             boxclase.setEnabled(true);
         }
     }//GEN-LAST:event_boxestadoActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-        // TODO add your handling code here:
+        if("Lista de clases".equals(boxclase.getSelectedItem().toString())){
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
+            pum.setVisible(true);
+            return;
+        }
+        String boxOption = boxclase.getSelectedItem().toString();
+        String[] doselementos = boxOption.split(" - ");
+        String selstatement = "SELECT * FROM `clasesemanal` WHERE `Diasemana` = '" + clase.setDBValue(doselementos[0]) + "' AND `Hora` = '" + doselementos[1] + "'";
+        List<String[]> list = dbconn.selectStatement(selstatement, TablasDB.clasesemanal);
+        
+        String instatement = "INSERT INTO `clasesalumnos` VALUES ('" + dni + "', '" + list.get(0)[0] + "')";
+        if(dbconn.modificationStatement(instatement)){
+            String[] str = {boxclase.getSelectedItem().toString()};
+            int index = boxclase.getSelectedIndex();
+            
+            model.addRow(str);
+            boxclase.setSelectedIndex(0);
+            boxclase.removeItemAt(index);
+            String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + list.get(0)[0] + "') WHERE `ID` = '" + list.get(0)[0] + "'";
+            dbconn.modificationStatement(updstatement);
+            
+        }else{
+            PopupMessage pum = new PopupMessage(PopupType.ERROR);
+            pum.setVisible(true);
+        }
     }//GEN-LAST:event_btnagregarActionPerformed
 
     private void tablaclasesalumnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaclasesalumnoMouseClicked
-        // TODO add your handling code here:
+        String claseSelec = tablaclasesalumno.getValueAt(tablaclasesalumno.getSelectedRow(), 0).toString();
+        claseSeleccionada = tablaclasesalumno.getSelectedRow();
+        String[] diahora = claseSelec.split(" - ");
+        String[] horaminuto = diahora[1].split(":");
+        String ID = clase.generateClassID(diahora[0], horaminuto[0], horaminuto[1]);
+        
+        ConfirmMessage cm = new ConfirmMessage();
+        cm.setEA(this);
+        cm.setDNI(dni);
+        cm.setIDClase(ID);
+        cm.setType(ConfirmType.clasealumno);
+        cm.setVisible(true);
     }//GEN-LAST:event_tablaclasesalumnoMouseClicked
 
     /**
@@ -467,7 +505,7 @@ public class EditorAlumno extends javax.swing.JFrame {
                 boxclase.addItem(itembox);
             }
         }
-        // SACAR CLASES YA PUESTAS
+        
         if(listClases != null){
             for(int i = 0; i < listClases.size(); i++){
                 String[] str = listClases.get(i);
@@ -500,6 +538,17 @@ public class EditorAlumno extends javax.swing.JFrame {
     private void initModelClasesAlumno(){
         model.addColumn("Clase");
         tablaclasesalumno.setRowHeight(20);
+    }
+    
+    public void eliminarClase(String id){
+        String claseSelec = tablaclasesalumno.getValueAt(claseSeleccionada, 0).toString();
+        if (boxclasemodel.getIndexOf(claseSelec) == -1) {
+            boxclase.addItem(claseSelec);
+        }
+        
+        model.removeRow(tablaclasesalumno.getSelectedRow());
+        String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + id + "') WHERE `ID` = '" + id + "'";
+        dbconn.modificationStatement(updstatement);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

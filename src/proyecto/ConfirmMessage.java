@@ -147,6 +147,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
                 String statement = "DELETE FROM `clasesalumnos` WHERE `dni_alumno` = '" + dni + "' AND `id_clase` = '" + ID + "'";
                 dbconn.modificationStatement(statement);
                 dispose();
+                EA.eliminarClase(ID);
                 break;
         }
     }//GEN-LAST:event_btnaceptarActionPerformed
