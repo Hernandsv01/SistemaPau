@@ -8,17 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DBConnection {
+public class DBConnection {
     
-    private Connection conn = null;
+    private static Connection conn = null;
     private PreparedStatement prepSt;
     private ResultSet rs;
     
-    public DBConnection(){
-        connection();
-    }
+    private static DBConnection dbconn = null;
     
-    public Connection connection(){
+    private DBConnection(){
         try{
             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectopau", "root", "");
             System.out.println("Conexión exitosa");
@@ -26,7 +24,13 @@ public final class DBConnection {
         catch(SQLException e){
             e.printStackTrace();
         }
-        return conn;
+    }
+    
+    public static DBConnection getInstance(){
+        if(dbconn == null){
+            dbconn = new DBConnection();
+        }
+        return dbconn;
     }
     
     public List<String[]> selectStatement(String statement, TablasDB tablasDB){

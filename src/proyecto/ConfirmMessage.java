@@ -19,14 +19,12 @@ public class ConfirmMessage extends javax.swing.JFrame {
     private ViewerClaseSemanal VCS;
     private EditorClaseSemanal ECS;
     private ConfirmType type;
-    private final DBConnection dbconn;
     
     /**
      * Creates new form ConfirmMessage
      */
     public ConfirmMessage() {
         initComponents();
-        dbconn = new DBConnection();
     }
     
     public void setDNI(String dni){
@@ -126,7 +124,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
         switch (type) {
             case alumno:{
                 String statement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
-                dbconn.modificationStatement(statement);
+                DBConnection.getInstance().modificationStatement(statement);
                 dispose();
                 EA.dispose();
                 PopupMessage pum = new PopupMessage(PopupType.A_ELIMINADO);
@@ -135,7 +133,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
                 }
             case clase:{
                 String statement = "DELETE FROM `clasesemanal` WHERE `clasesemanal`.`hora` = '" + hora + "' AND `clasesemanal`.`diasemana` = '" + dia + "'";
-                dbconn.modificationStatement(statement);
+                DBConnection.getInstance().modificationStatement(statement);
                 dispose();
                 VCS.dispose();
                 ECS.dispose();
@@ -145,7 +143,7 @@ public class ConfirmMessage extends javax.swing.JFrame {
                 }
             case clasealumno:
                 String statement = "DELETE FROM `clasesalumnos` WHERE `dni_alumno` = '" + dni + "' AND `id_clase` = '" + ID + "'";
-                dbconn.modificationStatement(statement);
+                DBConnection.getInstance().modificationStatement(statement);
                 dispose();
                 EA.eliminarClase(ID);
                 break;

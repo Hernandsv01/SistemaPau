@@ -18,7 +18,6 @@ public class AlumnoFrame extends javax.swing.JFrame {
     DefaultTableModel model3 = new DefaultTableModel();
     DefaultTableModel model4 = new DefaultTableModel();
     
-    private final DBConnection dbconn = new DBConnection();
     private final Alumno alumno = new Alumno();
     private final Clase clase = new Clase();
     
@@ -476,26 +475,26 @@ public class AlumnoFrame extends javax.swing.JFrame {
         String statement14 = "INSERT INTO `alumnos` VALUES ('14', 'MARIA CRISTIANO', 'MARIAC@GMAIL.COM', '1192467239', '43', '2021/04/22', '0')";
         String statement15 = "INSERT INTO `alumnos` VALUES ('15', 'JOACO SANTANGELO', 'JOACOS@GMAIL.COM', '1192467239', '22', '2021/04/22', '1')";
 
-        dbconn.modificationStatement(statement1);
-        dbconn.modificationStatement(statement2);
-        dbconn.modificationStatement(statement3);
-        dbconn.modificationStatement(statement4);
-        dbconn.modificationStatement(statement5);
-        dbconn.modificationStatement(statement6);
-        dbconn.modificationStatement(statement7);
-        dbconn.modificationStatement(statement8);
-        dbconn.modificationStatement(statement9);
-        dbconn.modificationStatement(statement10);
-        dbconn.modificationStatement(statement11);
-        dbconn.modificationStatement(statement12);
-        dbconn.modificationStatement(statement13);
-        dbconn.modificationStatement(statement14);
-        dbconn.modificationStatement(statement15);
+        DBConnection.getInstance().modificationStatement(statement1);
+        DBConnection.getInstance().modificationStatement(statement2);
+        DBConnection.getInstance().modificationStatement(statement3);
+        DBConnection.getInstance().modificationStatement(statement4);
+        DBConnection.getInstance().modificationStatement(statement5);
+        DBConnection.getInstance().modificationStatement(statement6);
+        DBConnection.getInstance().modificationStatement(statement7);
+        DBConnection.getInstance().modificationStatement(statement8);
+        DBConnection.getInstance().modificationStatement(statement9);
+        DBConnection.getInstance().modificationStatement(statement10);
+        DBConnection.getInstance().modificationStatement(statement11);
+        DBConnection.getInstance().modificationStatement(statement12);
+        DBConnection.getInstance().modificationStatement(statement13);
+        DBConnection.getInstance().modificationStatement(statement14);
+        DBConnection.getInstance().modificationStatement(statement15);
     }//GEN-LAST:event_btntestActionPerformed
 
     private void btnagregaralumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregaralumnoActionPerformed
         String statement = "INSERT INTO `alumnos` VALUES ('" + txtnewalumno.getText().toUpperCase() + "', '" + numnewedad.getValue().toString() + "', '" + txtnewtelefono.getText() + "', '" + txtnewmail.getText().toUpperCase() + "', '" + txtnewdni.getText() + "', '" + txtfechainicio.getText() + "', '1', null, null, '" + txtanotaciones.getText() + "')";
-        if(dbconn.modificationStatement(statement)){
+        if(DBConnection.getInstance().modificationStatement(statement)){
             txtnewalumno.setText("");
             numnewedad.setValue(0);
             txtnewtelefono.setText("");
@@ -524,7 +523,7 @@ public class AlumnoFrame extends javax.swing.JFrame {
         String dni = (String)tabladeresultados.getValueAt(row, 1);
         
         String statement = "SELECT * FROM `alumnos` WHERE dni = " + dni;
-        List<String[]> infoAlumno = dbconn.selectStatement(statement, TablasDB.alumnos);
+        List<String[]> infoAlumno = DBConnection.getInstance().selectStatement(statement, TablasDB.alumnos);
         if(Integer.parseInt(infoAlumno.get(0)[6]) == 0){
             infoAlumno.get(0)[6] = "Inactivo";
         }else{
@@ -532,7 +531,7 @@ public class AlumnoFrame extends javax.swing.JFrame {
         }
         
         String stselect = "SELECT * FROM `clasesemanal`";
-        List<String[]> listClases = dbconn.selectStatement(stselect, TablasDB.clasesemanal);
+        List<String[]> listClases = DBConnection.getInstance().selectStatement(stselect, TablasDB.clasesemanal);
         for(int i = 0; i < listClases.size(); i++){
             listClases.get(i)[1] = clase.setClassValue(listClases.get(i)[1]);
         }
@@ -617,7 +616,7 @@ public class AlumnoFrame extends javax.swing.JFrame {
                 }
             }
         }
-        List<String[]> list = dbconn.selectStatement(statement, TablasDB.alumnos);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, TablasDB.alumnos);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
             String[] swapped1 = swap(str[0], str[1]);
@@ -647,7 +646,7 @@ public class AlumnoFrame extends javax.swing.JFrame {
             model2.removeRow(i);
         }
         String statement = "SELECT * FROM `alumnos`";
-        List<String[]> list = dbconn.selectStatement(statement, TablasDB.alumnos);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, TablasDB.alumnos);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
             String[] swapped = swap(str[0], str[1]);
@@ -665,10 +664,10 @@ public class AlumnoFrame extends javax.swing.JFrame {
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
         for(int i = 1; i < 16; i++){
             String selstatement = "SELECT * FROM `alumnos` WHERE `DNI` = " + i;
-            List<String[]> list = dbconn.selectStatement(selstatement, TablasDB.alumnos);
+            List<String[]> list = DBConnection.getInstance().selectStatement(selstatement, TablasDB.alumnos);
             String[] str = list.get(0);
             String updstatement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = '" + str[0] + "'";
-            dbconn.modificationStatement(updstatement);
+            DBConnection.getInstance().modificationStatement(updstatement);
         }
     }//GEN-LAST:event_btnresetActionPerformed
 

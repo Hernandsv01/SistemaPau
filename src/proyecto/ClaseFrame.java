@@ -18,7 +18,6 @@ public class ClaseFrame extends javax.swing.JFrame {
     DefaultTableModel model3 = new DefaultTableModel();
     DefaultTableModel model4 = new DefaultTableModel();
     
-    private final DBConnection dbconn = new DBConnection();
     private final Alumno alumno = new Alumno();
     private final Clase clase = new Clase();
     
@@ -389,7 +388,8 @@ public class ClaseFrame extends javax.swing.JFrame {
 
         //Checks that created class doesn't already exist
         String diaDB = clase.setDBValue(dia);
-        List<String[]> list = dbconn.selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
+        List<String[]> list = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
+        List<String[]> test = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
             if(diaDB.equals(str[1]) && horario.equals(str[2])){
@@ -404,7 +404,7 @@ public class ClaseFrame extends javax.swing.JFrame {
         String classID = clase.generateClassID(dia, doselementos[0], doselementos[1]);
         String statement = "INSERT INTO `clasesemanal` VALUES ('";
         statement += classID + "', '" + diaDB + "', '" + horario + "', " + num + ", '0', '" + tematica + "')";
-        if(dbconn.modificationStatement(statement)){
+        if(DBConnection.getInstance().modificationStatement(statement)){
             PopupMessage pum = new PopupMessage(PopupType.C_AGREGADA);
             pum.setVisible(true);
         }else{
@@ -430,7 +430,7 @@ public class ClaseFrame extends javax.swing.JFrame {
                 System.out.println("    Column: " + diaDB);
 
                 String selectstatement = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `id` = '" + intnum + "'";
-                List<String[]> results = dbconn.selectStatement(selectstatement, TablasDB.clasesemanal);
+                List<String[]> results = DBConnection.getInstance().selectStatement(selectstatement, TablasDB.clasesemanal);
                 String[] strRes = results.get(0);
                 String diasemana = strRes[1];
                 String horavieja = strRes[2];
@@ -438,7 +438,7 @@ public class ClaseFrame extends javax.swing.JFrame {
 
                 int newNumClase = Integer.parseInt(numClase)+1;
                 String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                dbconn.modificationStatement(stupdate);
+                DBConnection.getInstance().modificationStatement(stupdate);
                 intnum++;
             }
         }catch(IndexOutOfBoundsException e){
@@ -458,7 +458,7 @@ public class ClaseFrame extends javax.swing.JFrame {
         String statement = "SELECT * FROM `clasesemanal`";
         String[] empty = new String[0];
 
-        List<String[]> list = dbconn.selectStatement(statement, TablasDB.clasesemanal);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, TablasDB.clasesemanal);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
             String id = str[0];
@@ -469,7 +469,7 @@ public class ClaseFrame extends javax.swing.JFrame {
 
             //Updates number of Alumnos in every class
             String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + id + "') WHERE `ID` = '" + id + "'";
-            dbconn.modificationStatement(updstatement);
+            DBConnection.getInstance().modificationStatement(updstatement);
 
             //Add the rows
             int diasemanaInt = Integer.parseInt(diasemana);
@@ -491,7 +491,7 @@ public class ClaseFrame extends javax.swing.JFrame {
         if(tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()) != null){
             String doselementos[] = tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()).toString().split(" - ");
             String statement = "SELECT * FROM `clasesemanal` WHERE `hora` = '" + doselementos[0] + "' AND `diasemana` = " + tablasemanal.getSelectedColumn();
-            List<String[]> list = dbconn.selectStatement(statement, TablasDB.clasesemanal);
+            List<String[]> list = DBConnection.getInstance().selectStatement(statement, TablasDB.clasesemanal);
             String[] infoclase = list.get(0);
 
             ViewerClaseSemanal VCS = new ViewerClaseSemanal();

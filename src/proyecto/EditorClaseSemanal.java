@@ -28,7 +28,6 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     private String[] boxInfo;
     
     private javax.swing.DefaultComboBoxModel boxclasemodel;
-    private final DBConnection dbconn;
     private final Clase clase;
     private ViewerClaseSemanal VCS;
     private EditorClaseSemanal ECS;
@@ -39,7 +38,6 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
      */
     public EditorClaseSemanal() {
         initComponents();
-        dbconn = new DBConnection();
         clase = new Clase();
     }
 
@@ -202,9 +200,9 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
             statement += "`ID` = '" + newID + "' ";
             
             String selstatement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + ID + "'";
-            clasesalumnos = dbconn.selectStatement(selstatement, TablasDB.clasesalumnos);
+            clasesalumnos = DBConnection.getInstance().selectStatement(selstatement, TablasDB.clasesalumnos);
             String delstatement = "DELETE FROM `clasesalumnos` WHERE `id_clase` = '" + ID + "'";
-            dbconn.modificationStatement(delstatement);
+            DBConnection.getInstance().modificationStatement(delstatement);
             
             changedID = true;
         }
@@ -218,7 +216,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
                 pum.setVisible(true);
                 throw new RuntimeException();
             }
-            List<String[]> listClase = dbconn.selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
+            List<String[]> listClase = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", TablasDB.clasesemanal);
             for(int i = 0; i < listClase.size(); i++){
                 String[] str = listClase.get(i);
                 if(newDiaDB.equals(str[1]) && txthorario.getText().equals(str[2]) && numclase.getValue().toString().equals(str[3])){
@@ -229,7 +227,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
                 }
             }
             
-            dbconn.modificationStatement(statement);
+            DBConnection.getInstance().modificationStatement(statement);
             PopupMessage pum = new PopupMessage(PopupType.C_EDITADA);
             pum.setVisible(true);
             
@@ -244,7 +242,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
             for(int i = 0; i < clasesalumnos.size(); i++){
                 String[] str = clasesalumnos.get(i);
                 String instatement = "INSERT INTO `clasesalumnos` VALUES ('" + str[0] + "', '" + newID + "')";
-                dbconn.modificationStatement(instatement);
+                DBConnection.getInstance().modificationStatement(instatement);
             }
         }
         
@@ -257,7 +255,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
                 System.out.println("    Column: " + newDiaDB);
                 
                 String[] doselementos = tablasemanal.getValueAt(newNumTableValue, Integer.parseInt(newDiaDB)).toString().split(" - ");
-                List<String[]> claseToChange = dbconn.selectStatement("SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + newDiaDB + "' AND `Hora` = '" + doselementos[0] + "'", TablasDB.clasesemanal);
+                List<String[]> claseToChange = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + newDiaDB + "' AND `Hora` = '" + doselementos[0] + "'", TablasDB.clasesemanal);
                 String[] str = claseToChange.get(0);
                 String diasemana1 = str[1];
                 String horavieja = str[2];
@@ -266,7 +264,7 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
                 int newNumClase = Integer.parseInt(num)+1;
 
                 String stupdate = "UPDATE `clasesemanal` SET `Numero` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = '" + diasemana1 + "' AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                dbconn.modificationStatement(stupdate);
+                DBConnection.getInstance().modificationStatement(stupdate);
 
                 newNum++;
                 newNumTableValue++;

@@ -29,7 +29,6 @@ public class EditorAlumno extends javax.swing.JFrame {
     private DefaultComboBoxModel boxclasemodel;
     private DefaultTableModel model = new DefaultTableModel();
     private static String exboxitem;
-    private final DBConnection dbconn = new DBConnection();
     private Clase clase = new Clase();
     private EditorAlumno EA;
 
@@ -362,7 +361,7 @@ public class EditorAlumno extends javax.swing.JFrame {
             PopupMessage pum = new PopupMessage(PopupType.A_NO_ACTUALIZADO);
             pum.setVisible(true);
             dispose();
-        }else if(!dbconn.modificationStatement(statement)){
+        }else if(!DBConnection.getInstance().modificationStatement(statement)){
             PopupMessage pum = new PopupMessage(PopupType.ERROR);
             pum.setVisible(true);
         }else{
@@ -399,10 +398,10 @@ public class EditorAlumno extends javax.swing.JFrame {
         String boxOption = boxclase.getSelectedItem().toString();
         String[] doselementos = boxOption.split(" - ");
         String selstatement = "SELECT * FROM `clasesemanal` WHERE `Diasemana` = '" + clase.setDBValue(doselementos[0]) + "' AND `Hora` = '" + doselementos[1] + "'";
-        List<String[]> list = dbconn.selectStatement(selstatement, TablasDB.clasesemanal);
+        List<String[]> list = DBConnection.getInstance().selectStatement(selstatement, TablasDB.clasesemanal);
         
         String instatement = "INSERT INTO `clasesalumnos` VALUES ('" + dni + "', '" + list.get(0)[0] + "')";
-        if(dbconn.modificationStatement(instatement)){
+        if(DBConnection.getInstance().modificationStatement(instatement)){
             String[] str = {boxclase.getSelectedItem().toString()};
             int index = boxclase.getSelectedIndex();
             
@@ -410,7 +409,7 @@ public class EditorAlumno extends javax.swing.JFrame {
             boxclase.setSelectedIndex(0);
             boxclase.removeItemAt(index);
             String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + list.get(0)[0] + "') WHERE `ID` = '" + list.get(0)[0] + "'";
-            dbconn.modificationStatement(updstatement);
+            DBConnection.getInstance().modificationStatement(updstatement);
             
         }else{
             PopupMessage pum = new PopupMessage(PopupType.ERROR);
@@ -516,12 +515,12 @@ public class EditorAlumno extends javax.swing.JFrame {
     }
     public void setClasesAlumno(){
         String statement1 = "SELECT * FROM `clasesalumnos` WHERE `dni_alumno` = '" + dni + "'";
-        List<String[]> list = dbconn.selectStatement(statement1, TablasDB.clasesalumnos);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement1, TablasDB.clasesalumnos);
         for(int i = 0; i < list.size(); i++){
             String[] str1 = list.get(i);
             
             String statement2 = "SELECT * FROM `clasesemanal` WHERE `ID` = '" + str1[1] + "'";
-            List<String[]> list2 = dbconn.selectStatement(statement2, TablasDB.clasesemanal);
+            List<String[]> list2 = DBConnection.getInstance().selectStatement(statement2, TablasDB.clasesemanal);
             listClases.add(list2.get(0));
             String[] str2 = list2.get(0);
             
@@ -548,7 +547,7 @@ public class EditorAlumno extends javax.swing.JFrame {
         
         model.removeRow(tablaclasesalumno.getSelectedRow());
         String updstatement = "UPDATE `clasesemanal` AS cs SET cs.`Cantidad` = (SELECT COUNT(*) FROM `clasesalumnos` AS ca WHERE ca.`id_clase` = '" + id + "') WHERE `ID` = '" + id + "'";
-        dbconn.modificationStatement(updstatement);
+        DBConnection.getInstance().modificationStatement(updstatement);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

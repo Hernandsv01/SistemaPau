@@ -21,7 +21,6 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
     private String[] infoclase;
     DefaultTableModel model = new DefaultTableModel();
     private javax.swing.JTable tablasemanal;
-    private final DBConnection dbconn = new DBConnection();
 
     /**
      * Creates new form ViewerClaseSemanal
@@ -41,12 +40,12 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
     public void setAlumnos(){
         //Sets the list of Alumnos in the viewer
         String statement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + infoclase[0] + "'";
-        List<String[]> listDNI = dbconn.selectStatement(statement, TablasDB.clasesalumnos);
+        List<String[]> listDNI = DBConnection.getInstance().selectStatement(statement, TablasDB.clasesalumnos);
         for(int i = 0; i < listDNI.size(); i++){
             String[] strDNI = listDNI.get(i);
             
             String selectst = "SELECT * FROM `alumnos` WHERE DNI = '" + strDNI[0] + "'";
-            List<String[]> listNames = dbconn.selectStatement(selectst, TablasDB.alumnos);
+            List<String[]> listNames = DBConnection.getInstance().selectStatement(selectst, TablasDB.alumnos);
             String[] strListAlu = listNames.get(0);
             String[] strName = {strListAlu[1]};
             

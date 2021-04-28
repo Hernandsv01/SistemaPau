@@ -19,6 +19,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         getContentPane().setBackground(new Color(247,247,247));
+        DBConnection.getInstance();
     }
 
     /**
