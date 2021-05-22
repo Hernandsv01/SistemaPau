@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="27">
+        <file>
+            <url>src/proyecto/CreadorRegistro.java</url>
+            <bookmark id="9">
+                <name/>
+                <line>244</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/EditorClaseSemanal.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/ClaseFrame.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/Menu.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/EditorAlumno.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/ConfirmMessage.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/DBConnection.java</file>
-            <file>file:/C:/Hernan/Proyectos/Proyecto/src/proyecto/AlumnoFrame.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/main/ViewerClaseSemanal.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/editors/EditorRegistro.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/main/AlumnoFrame.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/tools/Clase.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/main/ClaseFrame.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/editors/EditorAlumno.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/tools/ConfirmMessage.java</file>
+            <file>file:/C:/Hernan/Proyectos/Proyecto/src/editors/EditorAusencia.java</file>
         </group>
     </open-files>
 </project-private>
