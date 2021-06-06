@@ -136,8 +136,10 @@ public class ConfirmMessage extends javax.swing.JFrame {
     private void btnaceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaceptarActionPerformed
         switch (type) {
             case E_ALUMNO:{
-                String statement = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
-                DBConnection.getInstance().modificationStatement(statement);
+                String statement1 = "DELETE FROM `comentariosalumnos` WHERE `dni_alumno` = '" + dni + "'";
+                DBConnection.getInstance().modificationStatement(statement1);
+                String statement2 = "DELETE FROM `alumnos` WHERE `alumnos`.`DNI` = " + dni;
+                DBConnection.getInstance().modificationStatement(statement2);
                 dispose();
                 EA.dispose();
                 new PopupMessage("Alumno eliminado con exito", Color.GREEN).setVisible(true);

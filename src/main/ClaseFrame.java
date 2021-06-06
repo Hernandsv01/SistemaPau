@@ -350,7 +350,7 @@ public class ClaseFrame extends javax.swing.JFrame {
             new PopupMessage("Error", Color.RED).setVisible(true);
             return;
         }
-        if(horario.length() != 5 || horario.length() != 8){
+        if(horario.length() != 5 && horario.length() != 8){
             new PopupMessage("Error - Horario no valido", Color.RED).setVisible(true);
             return;
         }
