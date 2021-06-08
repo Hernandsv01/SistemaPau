@@ -588,9 +588,9 @@ public class AlumnoFrame extends javax.swing.JFrame {
         }
         
         String stselect = "SELECT * FROM `clasesemanal`";
-        List<String[]> listClases = DBConnection.getInstance().selectStatement(stselect, 5);
+        List<String[]> listClases = DBConnection.getInstance().selectStatement(stselect, 6);
         for(int i = 0; i < listClases.size(); i++){
-            listClases.get(i)[1] = Clase.setClassValue(listClases.get(i)[1]);
+            listClases.get(i)[2] = Clase.setClassValue(listClases.get(i)[2]);
         }
         
         EditorAlumno EA = new EditorAlumno();
@@ -618,40 +618,40 @@ public class AlumnoFrame extends javax.swing.JFrame {
         
         //Check if any parameter is settled
         String statement = "SELECT * FROM `alumnos` ";
-        if(!"".equals(nombre) ||
-            !"".equals(DNI) ||
-            !"".equals(telefono) ||
-            !"".equals(mail) ||
-            !"0".equals(edad) ||
-            !"Seleccione".equals(estado)){
+        if(!nombre.equals("") ||
+            !DNI.equals("") ||
+            !telefono.equals("") ||
+            !mail.equals("") ||
+            !edad.equals("0") ||
+            !estado.equals("Seleccione")){
 
             statement = statement + "WHERE ";
-            if(!"".equals(nombre)){
+            if(!nombre.equals("")){
                 statement = statement + "`nombre` LIKE '" + nombre + "%' ";
                 isFirst = true;
             }
-            if(!"".equals(DNI)){
+            if(!DNI.equals("")){
                 if(isFirst == true){
                     statement += "AND ";
                 }
                 statement = statement + "`DNI` LIKE '" + DNI + "%' ";
                 isFirst = true;
             }
-            if(!"".equals(telefono)){
+            if(!telefono.equals("")){
                 if(isFirst == true){
                     statement += "AND ";
                 }
                 statement = statement + "`Telefono` LIKE '" + telefono + "%' ";
                 isFirst = true;
             }
-            if(!"".equals(mail)){
+            if(!mail.equals("")){
                 if(isFirst == true){
                     statement += "AND ";
                 }
                 statement = statement + "`Mail` LIKE '" + mail + "%' ";
                 isFirst = true;
             }
-            if(!"0".equals(edad)){
+            if(!edad.equals("0")){
                 LocalDate currentDate = LocalDate.now();
                 LocalDate maxDate = currentDate.minusYears(Long.parseLong(edad));
                 LocalDate minDate = currentDate.minusYears(Long.parseLong(edad)+1).plusDays(1);
@@ -659,20 +659,20 @@ public class AlumnoFrame extends javax.swing.JFrame {
                 if(isFirst == true){
                     statement += "AND ";
                 }
-                if("Igual a".equals(boxoperador.getSelectedItem())){
+                if(boxoperador.getSelectedItem().equals("Igual a")){
                     statement += "`FechaNacimiento` BETWEEN '" + minDate + "' AND '" + maxDate + "' ";
-                }else if("Mayor a".equals(boxoperador.getSelectedItem())){
+                }else if(boxoperador.getSelectedItem().equals("Mayor a")){
                     statement += "`FechaNacimiento` < '" + maxDate + "' ";
                 }else{
                     statement += "`FechaNacimiento` > '" + maxDate + "' ";
                 }
                 isFirst = true;
             }
-            if(!"Seleccione".equals(estado)){
+            if(!estado.equals("Seleccione")){
                 if(isFirst == true){
                     statement += "AND ";
                 }
-                if("Activo".equals(estado)){
+                if(estado.equals("Activo")){
                     statement = statement + "`Estado` = 1 ";
                 }else{
                     statement = statement + "`Estado` = 0 ";
@@ -692,7 +692,7 @@ public class AlumnoFrame extends javax.swing.JFrame {
             str[5] = swapped3[0];
             str[6] = swapped3[1];
 
-            if("1".equals(str[5])){
+            if(str[5].equals("1")){
                 str[5] = "Activo";
             }else{
                 str[5] = "Inactivo";
@@ -757,8 +757,10 @@ public class AlumnoFrame extends javax.swing.JFrame {
             //Agregar ID en registro
             info.add(listInfo.get(i)[0]);
             
-            //FALTA VER MANEJO DE COMENTARIOS/RAZONES
-            info.add("Ninguna");
+            //Conseguir razon ausencia
+            String statement4 = "SELECT * FROM `razonesausencias` WHERE `dni_alumno` = '" + listInfo.get(i)[1] + "' AND `id_registroclase` = '" + listInfo.get(i)[0] + "'";
+            List<String[]> razon = DBConnection.getInstance().selectStatement(statement4, 3);
+            info.add(razon.get(0)[2]);
             
             //Conseguir estado de la recuperación(pendiente a recuperar, no recupera, recuperada)
             if(listInfo.get(i)[4] == null){
@@ -819,8 +821,10 @@ public class AlumnoFrame extends javax.swing.JFrame {
             //Agregar ID en registro
             info.add(listInfo.get(i)[0]);
             
-            //FALTA VER MANEJO DE COMENTARIOS/RAZONES
-            info.add("Ninguna");
+            //Conseguir razon ausencia
+            String statement4 = "SELECT * FROM `razonesausencias` WHERE `dni_alumno` = '" + listInfo.get(i)[1] + "' AND `id_registroclase` = '" + listInfo.get(i)[0] + "'";
+            List<String[]> razon = DBConnection.getInstance().selectStatement(statement4, 3);
+            info.add(razon.get(0)[2]);
             
             //Conseguir estado de la recuperación(pendiente a recuperar, no recupera, recuperada)
             if(listInfo.get(i)[4] == null){
@@ -866,9 +870,9 @@ public class AlumnoFrame extends javax.swing.JFrame {
         }
         
         String stselect = "SELECT * FROM `clasesemanal`";
-        List<String[]> listClases = DBConnection.getInstance().selectStatement(stselect, 5);
+        List<String[]> listClases = DBConnection.getInstance().selectStatement(stselect, 7);
         for(int i = 0; i < listClases.size(); i++){
-            listClases.get(i)[1] = Clase.setClassValue(listClases.get(i)[1]);
+            listClases.get(i)[2] = Clase.setClassValue(listClases.get(i)[2]);
         }
         
         EditorAlumno EA = new EditorAlumno();
@@ -887,12 +891,24 @@ public class AlumnoFrame extends javax.swing.JFrame {
         info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 2).toString());
         info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 1).toString());
         info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 4).toString());
-        if(!"".equals(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 5).toString())){
-            info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 5).toString());
-        }else{
-            info.add(null);
+        try{
+            if(!tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 5).toString().equals("")){
+                info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 5).toString());
+            }else{
+                info.add("");
+            }
+        }catch(Exception e){
+            info.add("");
         }
-        info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 3).toString());
+        try{
+            if(!tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 3).toString().equals("")){
+                info.add(tablapendientes.getValueAt(tablapendientes.getSelectedRow(), 3).toString());
+            }else{
+                info.add("");
+            }
+        }catch(Exception e){
+            info.add("");
+        }
         
         EditorAusencia EA = new EditorAusencia();
         EA.setInfo(info);
@@ -907,13 +923,22 @@ public class AlumnoFrame extends javax.swing.JFrame {
         info.add(tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 1).toString());
         info.add(tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 4).toString());
         try{
-            if(!"".equals(tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 5).toString()) || tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 5) != null){
+            if(!tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 5).toString().equals("") || tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 5) != null){
                 info.add(tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 5).toString());
             }else{
-                info.add(null);
+                info.add("");
             }
         }catch(Exception e){
-            info.add(null);
+            info.add("");
+        }
+        try{
+            if(!tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 3).toString().equals("")){
+                info.add(tablaausencias.getValueAt(tablaausencias.getSelectedRow(), 3).toString());
+            }else{
+                info.add("");
+            }
+        }catch(Exception e){
+            info.add("");
         }
             
         EditorAusencia EA = new EditorAusencia();

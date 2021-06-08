@@ -21,7 +21,7 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
     EditorClaseSemanal ECS;
     
     private String[] infoClase;
-    DefaultTableModel model = new DefaultTableModel();
+    private final DefaultTableModel model = new DefaultTableModel();
     private javax.swing.JTable tablasemanal;
 
     /**
@@ -68,9 +68,9 @@ public class ViewerClaseSemanal extends javax.swing.JFrame {
         String info = "";
         
         //Set class info
-        if(infoClase[6] != null){
-            info += "Temática de las clase: \n";
-            info += infoClase[6] + "\n \n";
+        info += infoClase[1] + ": \n";
+        if(infoClase[8] != null){
+            info += infoClase[8] + "\n \n";
         }
         
         //Set alumno info

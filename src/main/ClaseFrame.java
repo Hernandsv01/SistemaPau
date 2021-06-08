@@ -10,8 +10,11 @@ import tools.PopupMessage;
 import tools.Clase;
 import tools.DBConnection;
 import java.awt.Color;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,15 +32,8 @@ public class ClaseFrame extends javax.swing.JFrame {
      */
     public ClaseFrame() {
         initComponents();
-        initModelConsultaAlumno();
-        initModelListaAlumno();
         initModelListaSemanal();
         initModelRegistroClases();
-        
-        this.tablasemanal.setModel(model3);
-        tablasemanal.setShowGrid(true);
-        this.tablaregistro.setModel(model4);
-        tablaregistro.setShowGrid(true);
     }
 
     /**
@@ -59,15 +55,17 @@ public class ClaseFrame extends javax.swing.JFrame {
         btnactualizarclases = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        txthorario = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        numclase = new javax.swing.JSpinner();
         boxdia = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         txttematica = new javax.swing.JTextPane();
         btncrearclase = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        txttitulo = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        boxhorario = new javax.swing.JComboBox<>();
+        boxduracion = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaregistro = new javax.swing.JTable();
@@ -104,14 +102,37 @@ public class ClaseFrame extends javax.swing.JFrame {
         tablasemanal.setAutoCreateRowSorter(true);
         tablasemanal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"08:00 - 08:30", null, null, null, null, null, null},
+                {"08:30 - 09:00", null, null, null, null, null, null},
+                {"09:00 - 09:30", null, null, null, null, null, null},
+                {"09:30 - 10:00", null, null, null, null, null, null},
+                {"10:00 - 10:30", null, null, null, null, null, null},
+                {"10:30 - 11:00", null, null, null, null, null, null},
+                {"11:00 - 11:30", null, null, null, null, null, null},
+                {"11:30 - 12:00", null, null, null, null, null, null},
+                {"12:00 - 12:30", null, null, null, null, null, null},
+                {"12:30 - 13:00", null, null, null, null, null, null},
+                {"13:00 - 13:30", null, null, null, null, null, null},
+                {"13:30 - 14:00", null, null, null, null, null, null},
+                {"14:00 - 14:30", null, null, null, null, null, null},
+                {"14:30 - 15:00", null, null, null, null, null, null},
+                {"15:00 - 15:30", null, null, null, null, null, null},
+                {"15:30 - 16:00", null, null, null, null, null, null},
+                {"16:00 - 16:30", null, null, null, null, null, null},
+                {"16:30 - 17:00", null, null, null, null, null, null},
+                {"17:00 - 17:30", null, null, null, null, null, null},
+                {"17:30 - 18:00", null, null, null, null, null, null},
+                {"18:00 - 18:30", null, null, null, null, null, null},
+                {"18:30 - 19:00", null, null, null, null, null, null},
+                {"19:00 - 19:30", null, null, null, null, null, null},
+                {"19:30 - 20:00", null, null, null, null, null, null}
             },
             new String [] {
-                "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"
+                "", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -119,6 +140,7 @@ public class ClaseFrame extends javax.swing.JFrame {
             }
         });
         tablasemanal.setCellSelectionEnabled(true);
+        tablasemanal.setRowHeight(25);
         tablasemanal.setSurrendersFocusOnKeystroke(true);
         tablasemanal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -139,20 +161,16 @@ public class ClaseFrame extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnactualizarclases, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 949, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(657, Short.MAX_VALUE)
+                .addComponent(btnactualizarclases, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnactualizarclases, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -161,13 +179,9 @@ public class ClaseFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Horario: ");
 
-        txthorario.setToolTipText("00:00");
-
         jLabel9.setText("Dia de la semana:");
 
-        jLabel10.setText("N° de clase en el dia:");
-
-        boxdia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" }));
+        boxdia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un dia", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" }));
 
         jLabel11.setText("Temática");
 
@@ -180,49 +194,66 @@ public class ClaseFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel12.setText("Titulo:");
+
+        txttitulo.setToolTipText("00:00");
+
+        jLabel13.setText("Duración:");
+
+        boxhorario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un horario", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30" }));
+
+        boxduracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una duración", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00" }));
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txthorario, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numclase, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btncrearclase, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13))
+                .addGap(46, 46, 46)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txttitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(boxhorario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(boxduracion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(txttitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txthorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(boxhorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(boxduracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(numclase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
                 .addComponent(btncrearclase, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
@@ -308,7 +339,6 @@ public class ClaseFrame extends javax.swing.JFrame {
         
         //Creates new table
         String statement1 = "SELECT * FROM `registroclases`";
-        String[] empty = new String[0];
 
         List<String[]> listaClase = DBConnection.getInstance().selectStatement(statement1, 4);
         
@@ -340,28 +370,27 @@ public class ClaseFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnactualizarregistroActionPerformed
 
     private void btncrearclaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearclaseActionPerformed
-        String horario = txthorario.getText();
+        String titulo = txttitulo.getText().toUpperCase();
+        String horario = boxhorario.getSelectedItem().toString();
+        String duracion = boxduracion.getSelectedItem().toString();
+        int duracionInt = boxduracion.getSelectedIndex();
+        String frecuencia = "1";
         String dia = boxdia.getSelectedItem().toString();
-        String num = numclase.getValue().toString();
         String tematica = txttematica.getText();
-
+        
         // Checks if any value is null
-        if(horario == null || "Seleccione".equals(dia) || "0".equals(num)){
+        if(titulo.trim().equals("") || horario.equals("Seleccione un horario") || dia.equals("Seleccione un dia") || duracionInt == 0){
             new PopupMessage("Error", Color.RED).setVisible(true);
-            return;
-        }
-        if(horario.length() != 5 || horario.length() != 8){
-            new PopupMessage("Error - Horario no valido", Color.RED).setVisible(true);
             return;
         }
 
         //Checks that created class doesn't already exist
         String diaDB = Clase.setDBValue(dia);
-        List<String[]> list = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", 5);
+        List<String[]> list = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", 7);
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
             if(diaDB.equals(str[1]) && horario.equals(str[2])){
-            new PopupMessage("Error", Color.RED).setVisible(true);
+            new PopupMessage("Error - clases superpuestas", Color.RED).setVisible(true);
                 return;
             }
         }
@@ -370,7 +399,7 @@ public class ClaseFrame extends javax.swing.JFrame {
         String[] doselementos = horario.split(":");
         String classID = Clase.generateClassID(dia, doselementos[0], doselementos[1]);
         String statement = "INSERT INTO `clasesemanal` VALUES ('";
-        statement += classID + "', '" + diaDB + "', '" + horario + "', " + num + ", '0')";
+        statement += classID + "', '" + titulo + "', '" + diaDB + "', '" + horario + "', '" + duracion + "', '" + frecuencia + "', '0')";
         if(DBConnection.getInstance().modificationStatement(statement)){
             new PopupMessage("Clase agregada con exito", Color.GREEN).setVisible(true);
         }else{
@@ -388,36 +417,37 @@ public class ClaseFrame extends javax.swing.JFrame {
         }
             
         //Sets values back to empty
-        txthorario.setText("");
+        txttitulo.setText("");
+        boxhorario.setSelectedIndex(0);
+        boxduracion.setSelectedIndex(0);
         boxdia.setSelectedIndex(0);
-        numclase.setValue(0);
         txttematica.setText("");
-
-        //Checks if cell is already in use
-        //-------------------------REVISAR ALGORITMO------------------------------------
-        int intnum = Integer.parseInt(num);
-        int intNumTableValue = intnum-1;
-        try{
-            while(tablasemanal.getValueAt((intNumTableValue), Integer.parseInt(diaDB)) != null){
-                System.out.println("Cell not null values: ");
-                System.out.println("    Row: " + intNumTableValue);
-                System.out.println("    Column: " + diaDB);
-
-                String selectstatement = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `id` = '" + intnum + "'";
-                List<String[]> results = DBConnection.getInstance().selectStatement(selectstatement, 5);
-                String[] strRes = results.get(0);
-                String diasemana = strRes[1];
-                String horavieja = strRes[2];
-                String numClase = strRes[3];
-
-                int newNumClase = Integer.parseInt(numClase)+1;
-                String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                DBConnection.getInstance().modificationStatement(stupdate);
-                intnum++;
-            }
-        }catch(IndexOutOfBoundsException e){
-            System.out.println(e.getMessage());
-        }
+        
+//        //Checks if cell is already in use
+//        //-------------------------REVISAR ALGORITMO------------------------------------
+//        int intnum = Integer.parseInt(num);
+//        int intNumTableValue = intnum-1;
+//        try{
+//            while(tablasemanal.getValueAt((intNumTableValue), Integer.parseInt(diaDB)) != null){
+//                System.out.println("Cell not null values: ");
+//                System.out.println("    Row: " + intNumTableValue);
+//                System.out.println("    Column: " + diaDB);
+//
+//                String selectstatement = "SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + diaDB + "' AND `id` = '" + intnum + "'";
+//                List<String[]> results = DBConnection.getInstance().selectStatement(selectstatement, 5);
+//                String[] strRes = results.get(0);
+//                String diasemana = strRes[1];
+//                String horavieja = strRes[2];
+//                String numClase = strRes[3];
+//
+//                int newNumClase = Integer.parseInt(numClase)+1;
+//                String stupdate = "UPDATE `clasesemanal` SET `ID` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = " + diasemana + " AND `clasesemanal`.`hora` = '" + horavieja + "'";
+//                DBConnection.getInstance().modificationStatement(stupdate);
+//                intnum++;
+//            }
+//        }catch(IndexOutOfBoundsException e){
+//            System.out.println(e.getMessage());
+//        }
 
     }//GEN-LAST:event_btncrearclaseActionPerformed
 
@@ -425,45 +455,72 @@ public class ClaseFrame extends javax.swing.JFrame {
         //Deletes previous table
         int elitotal = tablasemanal.getRowCount();
         for(int i = elitotal-1; i>=0; i--){
-            model3.removeRow(i);
+            for(int l = 1; l <= 6; l++){
+                model3.setValueAt(null , i, l);
+            }
         }
 
         Clase.updateClassNumber();
         
-        //Creates new table
+        //Fill table
         String statement = "SELECT * FROM `clasesemanal`";
-        String[] empty = new String[0];
-
-        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 5);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 7);
         for(int i = 0; i < list.size(); i++){
             //Save the info
             String[] str = list.get(i);
-            String diasemana = str[1];
-            String hora = str[2];
-            String num = str[3];
-            String cantidad = str[4];
+            String titulo = str[1];
+            String diasemana = str[2];
+            String hora = str[3];
+            String duracion = str[4];
+            String frecuencia = str[5];
+            String cantidad = str[6];
 
             //Add the rows
-            int diasemanaInt = Integer.parseInt(diasemana);
-            int numDBValue = Integer.parseInt(num)-1;
-            int numeroUltimaFila = tablasemanal.getRowCount()-1;
-
-            if(numeroUltimaFila > numDBValue+1){
-                model3.setValueAt(hora + " - Ver Alumnos(" + cantidad + ")", numDBValue, diasemanaInt);
-            }else{
-                for(int l = numDBValue - numeroUltimaFila; l > 0; l--){
-                    model3.addRow(empty);
-                }
-                model3.setValueAt(hora + " - Ver Alumnos(" + cantidad + ")", numDBValue, diasemanaInt);
+            int diasemanaInt = Integer.parseInt(diasemana)+1;
+            int horaPosicion = Clase.getPositionFromTime(hora);
+            int duracionTabla = Clase.getDurationFromTime(duracion);
+            
+            model3.setValueAt(titulo + "(" + cantidad + ")", horaPosicion, diasemanaInt);
+            
+            for(int l = 2; l <= duracionTabla; l++){
+                horaPosicion++;
+                model3.setValueAt(titulo + "(" + cantidad + ")", horaPosicion, diasemanaInt);
             }
         }
     }//GEN-LAST:event_btnactualizarclasesActionPerformed
 
     private void tablasemanalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablasemanalMouseClicked
+        if(tablasemanal.getSelectedColumn() == 0){
+            return;
+        }
         if(tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()) != null){
-            String doselementos[] = tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()).toString().split(" - ");
-            String statement = "SELECT * FROM `clasesemanal` AS t1 INNER JOIN `tematicaclases` AS t2 ON t1.ID = t2.id_clase WHERE `hora` = '" + doselementos[0] + "' AND `diasemana` = " + tablasemanal.getSelectedColumn() + " ";
-            List<String[]> list = DBConnection.getInstance().selectStatement(statement, 7);
+            String hora[] = tablasemanal.getValueAt(tablasemanal.getSelectedRow(), 0).toString().split(" - ");
+            int dia = tablasemanal.getSelectedColumn()-1;
+            
+            String statement1 = "SELECT * FROM `clasesemanal`";
+            List<String[]> horas = DBConnection.getInstance().selectStatement(statement1, 7);
+            for(int i = 0; i < horas.size(); i++){
+                String[] str = horas.get(i);
+                String horaDB = str[3];
+                String[] horasminsDB = horaDB.split(":");
+                String duracionDB = str[4];
+                String[] horasminsduracionDB = duracionDB.split(":");
+                
+                LocalTime horaComienzoDB = LocalTime.of(Integer.parseInt(horasminsDB[0]), Integer.parseInt(horasminsDB[1]));
+                LocalTime horaFinDB = LocalTime.of(Integer.parseInt(horasminsDB[0]), Integer.parseInt(horasminsDB[1]));
+                horaFinDB = horaFinDB.plusHours(Integer.parseInt(horasminsduracionDB[0]));
+                horaFinDB = horaFinDB.plusMinutes(Integer.parseInt(horasminsduracionDB[1]));
+                
+                String[] horasmins = hora[0].split(":");
+                LocalTime horaClase = LocalTime.of(Integer.parseInt(horasmins[0]), Integer.parseInt(horasmins[1]));
+                
+                if(horaClase.isAfter(horaComienzoDB) && horaClase.isBefore(horaFinDB)){
+                    hora[0] = horaComienzoDB.toString();
+                }
+            }
+            
+            String statement2 = "SELECT * FROM `clasesemanal` AS t1 INNER JOIN `tematicaclases` AS t2 ON t1.ID = t2.id_clase WHERE `hora` = '" + hora[0] + "' AND `diasemana` = " + dia + " ";
+            List<String[]> list = DBConnection.getInstance().selectStatement(statement2, 9);
 
             ViewerClaseSemanal VCS = new ViewerClaseSemanal();
             VCS.setClase(list.get(0));
@@ -472,6 +529,7 @@ public class ClaseFrame extends javax.swing.JFrame {
             VCS.setTabla(tablasemanal);
             VCS.setVisible(true);
         }
+        
     }//GEN-LAST:event_tablasemanalMouseClicked
 
     private void btnagregarregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarregistroActionPerformed
@@ -485,38 +543,57 @@ public class ClaseFrame extends javax.swing.JFrame {
         info.add(tablaregistro.getValueAt(tablaregistro.getSelectedRow(), 1).toString());
         String diaclase = tablaregistro.getValueAt(tablaregistro.getSelectedRow(), 2).toString();
         String horaclase = tablaregistro.getValueAt(tablaregistro.getSelectedRow(), 3).toString();
-        info.add(diaclase + " - " + horaclase);
+        info.add(diaclase + " - " + horaclase + ":00");
         
         EditorRegistro ER = new EditorRegistro();
         ER.setInfo(info);
         ER.setVisible(true);
     }//GEN-LAST:event_tablaregistroMouseClicked
 
-    private void initModelConsultaAlumno(){
-        model1.addColumn("Nombre");
-        model1.addColumn("DNI");
-        model1.addColumn("Telefono");
-        model1.addColumn("Mail");
-        model1.addColumn("Edad");
-        model1.addColumn("Estado");
-    }
-    private void initModelListaAlumno(){
-        model2.addColumn("Nombre");
-        model2.addColumn("DNI");
-        model2.addColumn("Mail");
-        model2.addColumn("Telefono");
-        model2.addColumn("Edad");
-        model2.addColumn("Fecha inicio");
-        model2.addColumn("Estado");
-    }
     private void initModelListaSemanal(){
-        model3.addColumn("Lunes");
-        model3.addColumn("Martes");
-        model3.addColumn("Miercoles");
-        model3.addColumn("Jueves");
-        model3.addColumn("Viernes");
-        model3.addColumn("Sabado");
+        model3 = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"08:00 - 08:30", null, null, null, null, null, null},
+                {"08:30 - 09:00", null, null, null, null, null, null},
+                {"09:00 - 09:30", null, null, null, null, null, null},
+                {"09:30 - 10:00", null, null, null, null, null, null},
+                {"10:00 - 10:30", null, null, null, null, null, null},
+                {"10:30 - 11:00", null, null, null, null, null, null},
+                {"11:00 - 11:30", null, null, null, null, null, null},
+                {"11:30 - 12:00", null, null, null, null, null, null},
+                {"12:00 - 12:30", null, null, null, null, null, null},
+                {"12:30 - 13:00", null, null, null, null, null, null},
+                {"13:00 - 13:30", null, null, null, null, null, null},
+                {"13:30 - 14:00", null, null, null, null, null, null},
+                {"14:00 - 14:30", null, null, null, null, null, null},
+                {"14:30 - 15:00", null, null, null, null, null, null},
+                {"15:00 - 15:30", null, null, null, null, null, null},
+                {"15:30 - 16:00", null, null, null, null, null, null},
+                {"16:00 - 16:30", null, null, null, null, null, null},
+                {"16:30 - 17:00", null, null, null, null, null, null},
+                {"17:00 - 17:30", null, null, null, null, null, null},
+                {"17:30 - 18:00", null, null, null, null, null, null},
+                {"18:00 - 18:30", null, null, null, null, null, null},
+                {"18:30 - 19:00", null, null, null, null, null, null},
+                {"19:00 - 19:30", null, null, null, null, null, null},
+                {"19:30 - 20:00", null, null, null, null, null, null}
+            },
+            new String [] {
+                "", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        };
         tablasemanal.setRowHeight(50);
+        tablasemanal.setShowGrid(true);
+        tablasemanal.setModel(model3);
     }
     private void initModelRegistroClases(){
         model4.addColumn("ID");
@@ -525,6 +602,8 @@ public class ClaseFrame extends javax.swing.JFrame {
         model4.addColumn("Hora");
         model4.addColumn("Alumnos esperados");
         model4.addColumn("Ausentes");
+        tablaregistro.setShowGrid(true);
+        tablaregistro.setModel(model4);
     }
     
     @SuppressWarnings("Convert2Lambda")
@@ -557,12 +636,15 @@ public class ClaseFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxdia;
+    private javax.swing.JComboBox<String> boxduracion;
+    private javax.swing.JComboBox<String> boxhorario;
     private javax.swing.JButton btnactualizarclases;
     private javax.swing.JButton btnactualizarregistro;
     private javax.swing.JButton btnagregarregistro;
     private javax.swing.JButton btncrearclase;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
@@ -575,10 +657,9 @@ public class ClaseFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable4;
-    private javax.swing.JSpinner numclase;
     private javax.swing.JTable tablaregistro;
     private javax.swing.JTable tablasemanal;
-    private javax.swing.JTextField txthorario;
     private javax.swing.JTextPane txttematica;
+    private javax.swing.JTextField txttitulo;
     // End of variables declaration//GEN-END:variables
 }

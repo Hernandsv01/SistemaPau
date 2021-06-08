@@ -164,7 +164,7 @@ public class EditorAusencia extends javax.swing.JFrame implements Editor{
     }//GEN-LAST:event_btnaplicarActionPerformed
 
     private void boxrecuperaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxrecuperaActionPerformed
-        if("Si".equals(boxrecupera.getSelectedItem())){
+        if(boxrecupera.getSelectedItem().equals("Si")){
             boxclase.setEnabled(true);
         }else{
             boxclase.setEnabled(false);
@@ -215,7 +215,7 @@ public class EditorAusencia extends javax.swing.JFrame implements Editor{
         txtid.setText(info.get(1));
         txtfecha.setText(info.get(2));
         setClases(info.get(3), info.get(4));
-        if("Pendiente".equals(info.get(3))){
+        if(info.get(3).equals("Pendiente")){
             boxrecupera.setSelectedIndex(0);
             infoBoxes.add("Si");
             boxclase.setEnabled(true);
@@ -226,7 +226,7 @@ public class EditorAusencia extends javax.swing.JFrame implements Editor{
                 boxclase.setSelectedIndex(0);
                 infoBoxes.add(boxclase.getItemAt(0));
             }
-        }else if("Recuperada".equals(info.get(3))){
+        }else if(info.get(3).equals("Recuperada")){
             boxrecupera.setSelectedIndex(0);
             infoBoxes.add("Si");
             infoBoxes.add(infoAusencia.get(4));
@@ -274,23 +274,23 @@ public class EditorAusencia extends javax.swing.JFrame implements Editor{
         
         //Check changes in order
         String updstatement = "UPDATE `ausencias` SET ";
-        if(!infoBoxes.get(0).equals(newRecupera)){
-            if("Si".equals(newRecupera)){
+        if(!newRecupera.equals(infoBoxes.get(0))){
+            if(newRecupera.equals("Si")){
                 updstatement += "`recuperada` = null";
             }else{
                 updstatement += "`recuperada` = 0";
             }
             isFirst = false;
         }
-        if(!infoBoxes.get(1).equals(newRecuperacion)){
+        if(!newRecuperacion.equals(infoBoxes.get(1))){
             if(!isFirst){
                 updstatement += ", ";
             }
-            if(!"Seleccione la clase".equals(infoBoxes.get(1))){
+            if(!infoBoxes.get(1).equals("")){
                 String statement = "DELETE FROM `clasesalumnos` WHERE `dni_alumno` = '" + Alumno.getDNIFromName(infoAusencia.get(0)) + "' AND `id_clase` = '" + Clase.generateClassIDFromDisplay(infoBoxes.get(1)) + "'";
                 DBConnection.getInstance().modificationStatement(statement);
             }
-            if(!"Seleccione la clase".equals(newRecuperacion)){
+            if(!newRecuperacion.equals("Seleccione la clase")){
                 updstatement += "`id_claserecupera` = '" + Clase.generateClassIDFromDisplay(newRecuperacion) + "'";
                 String statement = "INSERT INTO `clasesalumnos` VALUES ('" + Alumno.getDNIFromName(infoAusencia.get(0)) + "', '" + Clase.generateClassIDFromDisplay(newRecuperacion) + "', 1)";
                 if(!DBConnection.getInstance().modificationStatement(statement)){
@@ -333,13 +333,13 @@ public class EditorAusencia extends javax.swing.JFrame implements Editor{
     
     @SuppressWarnings("ConvertToStringSwitch")
     public void setClases(String estado, String clase){
-        if("Pendiente".equals(estado)){
+        if(estado.equals("Pendiente")){
             String statement = "SELECT `ID` FROM `clasesemanal`";
             List<String[]> infoClases = DBConnection.getInstance().selectStatement(statement, 1);
             for(int i = 0; i < infoClases.size(); i++){
                 boxclase.addItem(Clase.generateDisplayFromClassID(infoClases.get(i)[0]));
             }
-        }else if("Recuperada".equals(estado)){
+        }else if(estado.equals("Recuperada")){
             boxclase.addItem(clase);
             boxclase.setEnabled(false);
             boxrecupera.setEnabled(false);

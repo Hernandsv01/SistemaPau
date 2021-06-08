@@ -122,4 +122,125 @@ public class Clase {
             DBConnection.getInstance().modificationStatement(updstatement);
         }
     }
+    
+    public static int getPositionFromTime(String time){
+        int position = 23;
+        String[] timeParts = time.split(":");
+        int hours = Integer.parseInt(timeParts[0]);
+        int minutes = Integer.parseInt(timeParts[1]);
+        
+        switch(hours){
+            case 8:
+                if(minutes == 30){
+                    position = 1;
+                }else{
+                    position = 0;
+                }
+                break;
+            case 9:
+                if(minutes == 30){
+                    position = 3;
+                }else{
+                    position = 2;
+                }
+                break;
+            case 10:
+                if(minutes == 30){
+                    position = 5;
+                }else{
+                    position = 4;
+                }
+                break;
+            case 11:
+                if(minutes == 30){
+                    position = 7;
+                }else{
+                    position = 6;
+                }
+                break;
+            case 12:
+                if(minutes == 30){
+                    position = 9;
+                }else{
+                    position = 8;
+                }
+                break;
+            case 13:
+                if(minutes == 30){
+                    position = 11;
+                }else{
+                    position = 10;
+                }
+                break;
+            case 14:
+                if(minutes == 30){
+                    position = 13;
+                }else{
+                    position = 12;
+                }
+                break;
+            case 15:
+                if(minutes == 30){
+                    position = 15;
+                }else{
+                    position = 14;
+                }
+                break;
+            case 16:
+                if(minutes == 30){
+                    position = 17;
+                }else{
+                    position = 16;
+                }
+                break;
+            case 17:
+                if(minutes == 30){
+                    position = 19;
+                }else{
+                    position = 18;
+                }
+                break;
+            case 18:
+                if(minutes == 30){
+                    position = 21;
+                }else{
+                    position = 20;
+                }
+                break;
+            case 19:
+                if(minutes == 30){
+                    position = 23;
+                }else{
+                    position = 22;
+                }
+                break;
+        }
+        
+        return position;
+    }
+    
+    public static int getDurationFromTime(String time){
+        int duration = 0;
+        switch(time){
+            case "00:30":
+                duration = 1;
+                break;
+            case "01:00":
+                duration = 2;
+                break;
+            case "01:30":
+                duration = 3;
+                break;
+            case "02:00":
+                duration = 4;
+                break;
+            case "02:30":
+                duration = 5;
+                break;
+            case "03:00":
+                duration = 6;
+                break;
+        }
+        return duration;
+    }
 }

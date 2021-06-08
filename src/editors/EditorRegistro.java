@@ -350,7 +350,7 @@ public final class EditorRegistro extends javax.swing.JFrame {
                     String statement2 = "INSERT INTO `ausencias` VALUES ('" + newID + "', '" + Alumno.getDNIFromName(doselementos[0]) + "', '" + Clase.generateClassIDFromDisplay(boxclase.getSelectedItem().toString()) + "', null, 0)";
                     DBConnection.getInstance().modificationStatement(statement2);
                 }
-                String statement = "INSERTO INTO `` VALUES ('" + Alumno.getDNIFromName(doselementos[0]) + "', '" + newID + "', null)";
+                String statement = "INSERT INTO `razonesausencias` VALUES ('" + Alumno.getDNIFromName(doselementos[0]) + "', '" + newID + "', null)";
                 DBConnection.getInstance().modificationStatement(statement);
             }
         }
@@ -422,6 +422,7 @@ public final class EditorRegistro extends javax.swing.JFrame {
         txtfecha.setText(info.get(1));
         boxclase.setSelectedItem(info.get(2));
         
+        
         //Get and set alumnos in presentes
         String statement1 = "SELECT * FROM `registropresentes` WHERE `id_registroclase` = '" + info.get(0) + "'";
         List<String[]> DNIAlumnosPresentes = DBConnection.getInstance().selectStatement(statement1, 3);
@@ -451,7 +452,7 @@ public final class EditorRegistro extends javax.swing.JFrame {
     
     public void setBoxClases(){
         String statement = "SELECT * FROM `clasesemanal`";
-        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 5);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 7);
         
         DefaultComboBoxModel boxclasemodel = new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una clase" });
         boxclase.setModel(boxclasemodel);
@@ -459,8 +460,8 @@ public final class EditorRegistro extends javax.swing.JFrame {
         
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
-            str[1] = Clase.setClassValue(str[1]);
-            itembox = str[1] + " - " + str[2];
+            str[2] = Clase.setClassValue(str[2]);
+            itembox = str[2] + " - " + str[3];
             if(boxclasemodel.getIndexOf(itembox) == -1){
                 boxclase.addItem(itembox);
             }

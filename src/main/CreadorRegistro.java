@@ -230,7 +230,7 @@ public final class CreadorRegistro extends javax.swing.JFrame {
         List<String[]> numeroAlumnos = DBConnection.getInstance().selectStatement(statement0, 1);
         
         //Check if the mandatory values are filled
-        if(txtid.getText() == null || txtfecha.getText() == null || "Seleccione una clase".equals(boxclase.getSelectedItem().toString())){
+        if(txtid.getText() == null || txtfecha.getText() == null || boxclase.getSelectedItem().toString().equals("Seleccione una clase")){
                 new PopupMessage("Error", Color.RED).setVisible(true);
             return;
         }
@@ -310,26 +310,25 @@ public final class CreadorRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaausentesMouseClicked
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
+        String selectedClass = boxclase.getSelectedItem().toString();
+        
         int elitotal1 = tablapresentes.getRowCount();
-        int elitotal2 = tablaausentes.getRowCount();
         for(int i = elitotal1-1; i>=0; i--){
             modelPresentes.removeRow(i);
         }
+        int elitotal2 = tablaausentes.getRowCount();
         for(int i = elitotal2-1; i>=0; i--){
             modelAusentes.removeRow(i);
         }
         
-        if("Seleccione una clase".equals(boxclase.getSelectedItem().toString())){
-            new PopupMessage("Error", Color.RED).setVisible(true);
+        if(selectedClass.equals("Seleccione una clase")){
+            new PopupMessage("Error - Clase no seleccionada", Color.RED).setVisible(true);
             return;
         }
         
-        String infoClase = boxclase.getSelectedItem().toString();
-        String[] dia_hora = infoClase.split(" - ");
-        String[] hora_mins = dia_hora[1].split(":");
-        String id_clase = Clase.generateClassID(dia_hora[0], hora_mins[0], hora_mins[1]);
+        String classID = Clase.generateClassIDFromDisplay(selectedClass);
         
-        String statement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + id_clase + "'";
+        String statement = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + classID + "'";
         List<String[]> listDNI = DBConnection.getInstance().selectStatement(statement, 3);
         if(!listDNI.isEmpty()){
             for(int i = 0; i < listDNI.size(); i++){
@@ -337,12 +336,14 @@ public final class CreadorRegistro extends javax.swing.JFrame {
                 List<String[]> alumnos = DBConnection.getInstance().selectStatement(statement2, 7);
                 for(int x = 0; x < alumnos.size(); x++){
                     String[] str = {alumnos.get(x)[1]};
-                    if("1".equals(listDNI.get(i)[2])){
+                    if(listDNI.get(i)[2].equals("1")){
                         str[0] += " - RECUPERA";
                     }
                     modelPresentes.addRow(str);
                 }
             }
+        }else{
+            new PopupMessage("Clase sin alumnos", Color.yellow).setVisible(true);
         }
     }//GEN-LAST:event_btnagregarActionPerformed
 
@@ -381,7 +382,7 @@ public final class CreadorRegistro extends javax.swing.JFrame {
     
     public void setBoxClases(){
         String statement = "SELECT * FROM `clasesemanal`";
-        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 5);
+        List<String[]> list = DBConnection.getInstance().selectStatement(statement, 7);
         
         DefaultComboBoxModel boxclasemodel = new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una clase" });
         boxclase.setModel(boxclasemodel);
@@ -389,8 +390,8 @@ public final class CreadorRegistro extends javax.swing.JFrame {
         
         for(int i = 0; i < list.size(); i++){
             String[] str = list.get(i);
-            str[1] = Clase.setClassValue(str[1]);
-            itembox = str[1] + " - " + str[2];
+            str[2] = Clase.setClassValue(str[2]);
+            itembox = str[2] + " - " + str[3];
             if(boxclasemodel.getIndexOf(itembox) == -1){
                 boxclase.addItem(itembox);
             }

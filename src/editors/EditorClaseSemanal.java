@@ -22,9 +22,11 @@ import main.ViewerClaseSemanal;
 public class EditorClaseSemanal extends javax.swing.JFrame {
 
     private String ID;
+    private String titulo;
     private String diasemana;
     private String horario;
-    private String numero;
+    private String duracion;
+    private String frecuencia;
     private String cantidad;
     private String tematica;
     
@@ -33,9 +35,6 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     private List<String[]> clasesalumnos;
     private List<String[]> tematicaclases;
     
-    private String[] boxInfo;
-    
-    private javax.swing.DefaultComboBoxModel boxclasemodel;
     private ViewerClaseSemanal VCS;
     private javax.swing.JTable tablasemanal;
     
@@ -55,33 +54,21 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnaplicar = new javax.swing.JButton();
+        btneliminar = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        boxhorario = new javax.swing.JComboBox<>();
         boxdia = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         txttematica = new javax.swing.JTextPane();
+        boxduracion = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        txthorario = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        numclase = new javax.swing.JSpinner();
-        btnaplicar = new javax.swing.JButton();
-        btneliminar = new javax.swing.JButton();
+        txttitulo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        boxdia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" }));
-
-        jLabel11.setText("Temática");
-
-        jScrollPane7.setViewportView(txttematica);
-
-        jLabel8.setText("Horario: ");
-
-        txthorario.setToolTipText("00:00");
-
-        jLabel9.setText("Dia de la semana:");
-
-        jLabel10.setText("N° de clase en el dia:");
 
         btnaplicar.setText("Aplicar cambios");
         btnaplicar.addActionListener(new java.awt.event.ActionListener() {
@@ -98,51 +85,78 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("Duración:");
+
+        boxhorario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30" }));
+
+        boxdia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" }));
+
+        jLabel11.setText("Temática");
+
+        jScrollPane7.setViewportView(txttematica);
+
+        boxduracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00:30", "01:00", "01:30", "02:00", "02:30", "03:00" }));
+
+        jLabel8.setText("Horario: ");
+
+        jLabel12.setText("Titulo:");
+
+        jLabel9.setText("Dia de la semana:");
+
+        txttitulo.setToolTipText("00:00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txthorario, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numclase, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(91, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(417, Short.MAX_VALUE)
                 .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txttitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(boxhorario, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(boxduracion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(txttitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(txthorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(boxhorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(boxduracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(boxdia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(numclase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnaplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -154,56 +168,70 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaplicarActionPerformed
-        boolean first = true;
+        boolean isFirst = true;
         boolean diaCambiado = false;
         boolean horaCambiada = false;
-        int newNum = Integer.parseInt(numclase.getValue().toString());
+        
+        String newTitulo = txttitulo.getText().trim().toUpperCase();
+        String newHorario = boxhorario.getSelectedItem().toString();
+        String newDuracion = boxduracion.getSelectedItem().toString();
         String newDia = boxdia.getSelectedItem().toString();
-        String newDiaDB = Clase.setDBValue(newDia);
-        String[] doselementos = txthorario.getText().split(":");
-        newID = Clase.generateClassID(boxdia.getSelectedItem().toString(), doselementos[0], doselementos[1]);
+        String newTematica = txttematica.getText().trim();
+        
+        String[] doselementos = newHorario.split(":");
+        newID = Clase.generateClassID(newDia, doselementos[0], doselementos[1]);
+        
+        if(newTitulo.length() >= 15){
+            new PopupMessage("Error - titulo demasiado largo", Color.RED).setVisible(true);
+            return;
+        }
         
         //Formar String con valores cambiados
         String statement = "UPDATE `clasesemanal` SET ";
         
-        if(!txthorario.getText().equals(horario)){
-            statement += "`hora` = '" + txthorario.getText().toUpperCase() + "' ";
-            first = false;
+        if(!newTitulo.equals(titulo)){
+            statement += "`titulo` = '" + newTitulo + "' ";
+            isFirst = false;
+        }
+        if(!newHorario.equals(horario)){
+            if(!isFirst){
+                statement += ", ";
+            }
+            statement += "`hora` = '" + newHorario + "' ";
+            isFirst = false;
             horaCambiada = true;
         }
-        if(!boxdia.getSelectedItem().toString().equals(Clase.setClassValue(diasemana))){
-            if(!first){
+        if(!newDuracion.equals(duracion)){
+            if(!isFirst){
                 statement += ", ";
             }
-            statement += "`diasemana` = '" + Clase.setDBValue(boxdia.getSelectedItem().toString()) + "' ";
-            first = false;
-            diaCambiado = true;
+            statement += "`duracion` = '" + newDuracion + "'";
+            isFirst = false;
         }
-        if(!numclase.getValue().toString().equals(numero)){
-            
-            if(!first){
+        if(!newDia.equals(Clase.setClassValue(diasemana))){
+            if(!isFirst){
                 statement += ", ";
             }
-            statement += "`Numero` = '" + newNum + "' ";
-            first = false;
+            statement += "`diasemana` = '" + Clase.setDBValue(newDia) + "' ";
+            isFirst = false;
+            diaCambiado = true;
         }
         
         //Chequear si cambia el ID y borrar de clasealumnos
         if(horaCambiada || diaCambiado){
-            if(!first){
-                statement += ", ";
-            }
-            statement += "`ID` = '" + newID + "' ";
-            
-            List<String[]> listClase = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", 5);
+            List<String[]> listClase = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal`", 7);
             for(int i = 0; i < listClase.size(); i++){
                 String[] str = listClase.get(i);
-                if(newDiaDB.equals(str[1]) && txthorario.getText().equals(str[2]) && numclase.getValue().toString().equals(str[3])){
-                    System.out.println("CLASE YA EXISTE - ERROR");
-                    new PopupMessage("Error", Color.RED).setVisible(true);
+                if(newID.equals(str[0])){
+                    new PopupMessage("Error - Clase superpuesta", Color.RED).setVisible(true);
                     return;
                 }
             }
+            
+            if(!isFirst){
+                statement += ", ";
+            }
+            statement += "`ID` = '" + newID + "' ";
             
             String selstatement1 = "SELECT * FROM `clasesalumnos` WHERE `id_clase` = '" + ID + "'";
             clasesalumnos = DBConnection.getInstance().selectStatement(selstatement1, 3);
@@ -216,13 +244,16 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
             
             changedID = true;
         }
+        
         statement += "WHERE `clasesemanal`.`diasemana` = '" + diasemana + "' AND `clasesemanal`.`hora` = '" + horario + "'";
         
-        if(!first){
-            DBConnection.getInstance().modificationStatement(statement);
+        if(!isFirst){
+            if(!DBConnection.getInstance().modificationStatement(statement)){
+                new PopupMessage("Error", Color.RED).setVisible(true);
+            }
         }
         
-        //Volver a agregar clases a clasesalumnos y tematicaclases
+        //Volver a agregar datos a clasesalumnos y tematicaclases
         if(changedID){
             for(int i = 0; i < clasesalumnos.size(); i++){
                 String[] str = clasesalumnos.get(i);
@@ -235,51 +266,20 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
                 DBConnection.getInstance().modificationStatement(instatement);
             }
         }
-         //VER TEMATICA -------------------------------------------------------------------------
+        
         if(!txttematica.getText().trim().equals(tematica)){
             String statement1;
-            if(txttematica.getText().trim().equals("")){
+            if(newTematica.equals("")){
                 statement1 = "UPDATE `tematicaclases` SET `tematica` = null WHERE `id_clase` = '" + newID + "'";
             }else{
-                statement1 = "UPDATE `tematicaclases` SET `tematica` = '" + txttematica.getText() + "' WHERE `id_clase` = '" + newID + "'";
+                statement1 = "UPDATE `tematicaclases` SET `tematica` = '" + newTematica + "' WHERE `id_clase` = '" + newID + "'";
             }
             DBConnection.getInstance().modificationStatement(statement1);
-            
-            
         }
         
-        //Chequear que celdas no estén ocupadas en tabla
-        if(changedID){
-            int newNumTableValue = newNum-1;
-            try{
-                while(tablasemanal.getValueAt(newNumTableValue, Integer.parseInt(newDiaDB)) != null){
-                    System.out.println("Cell not null values:");
-                    System.out.println("    Row: " + newNumTableValue);
-                    System.out.println("    Column: " + newDiaDB);
-
-                    String[] doselementos1 = tablasemanal.getValueAt(newNumTableValue, Integer.parseInt(newDiaDB)).toString().split(" - ");
-                    List<String[]> claseToChange = DBConnection.getInstance().selectStatement("SELECT * FROM `clasesemanal` WHERE `diasemana` = '" + newDiaDB + "' AND `Hora` = '" + doselementos1[0] + "'", 5);
-                    String[] str = claseToChange.get(0);
-                    String diasemana1 = str[1];
-                    String horavieja = str[2];
-                    String num = str[3];
-
-                    int newNumClase = Integer.parseInt(num)+1;
-
-                    String stupdate = "UPDATE `clasesemanal` SET `Numero` = '" + newNumClase + "' WHERE `clasesemanal`.`diasemana` = '" + diasemana1 + "' AND `clasesemanal`.`hora` = '" + horavieja + "'";
-                    DBConnection.getInstance().modificationStatement(stupdate);
-
-                    newNum++;
-                    newNumTableValue++;
-                }
-            }catch(NumberFormatException e){
-                e.printStackTrace();
-            }catch(IndexOutOfBoundsException e){
-                System.out.println(e.getMessage());
-            }
-        }
+        //Agregar chequeo de superposicion de clase con duracion
         
-        new PopupMessage("Clase editada con exito", Color.GREEN).setVisible(true);
+        new PopupMessage("Clase actualizada con exito", Color.GREEN).setVisible(true);
         dispose();
         VCS.dispose();
     }//GEN-LAST:event_btnaplicarActionPerformed
@@ -326,11 +326,10 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     }
     
     public void setBox(){
-        boxclasemodel = new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguna" });
-        boxdia.setModel(boxclasemodel);
-        for (String boxInfo1 : boxInfo) {
-            boxdia.addItem(boxInfo1);
-        }
+        boxhorario.setSelectedItem(horario);
+        boxduracion.setSelectedItem(duracion);
+        boxdia.setSelectedItem(Clase.setClassValue(diasemana));
+        
     }
     
     public void setVCS(ViewerClaseSemanal VCS){
@@ -340,27 +339,25 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
     public void setInfo(String[] infoClase){
         this.ID = infoClase[0];
         System.out.println("ID: " + ID);
-        this.diasemana = infoClase[1];
+        this.titulo = infoClase[1];
+        System.out.println("Titulo: " + titulo);
+        this.diasemana = infoClase[2];
         System.out.println("Dia Semana: " + diasemana);
-        this.horario = infoClase[2];
+        this.horario = infoClase[3].split(":")[0] + ":" + infoClase[3].split(":")[1];
         System.out.println("Horario: " + horario);
-        this.numero = infoClase[3];
-        System.out.println("Numero Clase: " + numero);
-        this.cantidad = infoClase[4];
+        this.duracion = infoClase[4];
+        System.out.println("Duracion: " + duracion);
+        this.frecuencia = infoClase[5];
+        System.out.println("Frecuencia: " + frecuencia);
+        this.cantidad = infoClase[6];
         System.out.println("Cantidad: " + cantidad);
-        this.tematica = infoClase[6];
+        this.tematica = infoClase[8];
         System.out.println("Tematica: " + tematica);
         
-        txthorario.setText(horario);
-        int numclaseint = Integer.parseInt(numero);
-        numclase.setValue(numclaseint);
+        txttitulo.setText(titulo);
+        setBox();
         txttematica.setText(tematica);
         
-        String[] infoDias = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
-        boxInfo = infoDias;
-        setBox();
-        String clasediasemana = Clase.setClassValue(diasemana);
-        boxdia.setSelectedItem(clasediasemana);
     }
     
     public void setTabla(JTable tablasemanal) {
@@ -369,16 +366,18 @@ public class EditorClaseSemanal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxdia;
+    private javax.swing.JComboBox<String> boxduracion;
+    private javax.swing.JComboBox<String> boxhorario;
     private javax.swing.JButton btnaplicar;
     private javax.swing.JButton btneliminar;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JSpinner numclase;
-    private javax.swing.JTextField txthorario;
     private javax.swing.JTextPane txttematica;
+    private javax.swing.JTextField txttitulo;
     // End of variables declaration//GEN-END:variables
 
 }

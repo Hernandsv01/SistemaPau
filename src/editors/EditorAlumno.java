@@ -72,6 +72,7 @@ public class EditorAlumno extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel20.setText("Anotaciones");
 
@@ -414,7 +415,7 @@ public class EditorAlumno extends javax.swing.JFrame {
                 DBConnection.getInstance().modificationStatement(statement1);
             }
             for(int i = 0; i < infoAusencias.size(); i++){
-                String statement1 = "INSERT INTO `ausencias` VALUES ('" + infoAusencias.get(i)[0] + "', '" + txtdni.getText() + "', '" + infoAusencias.get(i)[2] + "', '" + infoAusencias.get(i)[3] + "', '" + infoAusencias.get(i)[4] + "')";
+                String statement1 = "INSERT INTO `ausencias` VALUES ('" + infoAusencias.get(i)[0] + "', '" + txtdni.getText() + "', '" + infoAusencias.get(i)[2] + "', " + infoAusencias.get(i)[3] + ", " + infoAusencias.get(i)[4] + ")";
                 DBConnection.getInstance().modificationStatement(statement1);
             }
             for(int i = 0; i < infoRazonesAusencias.size(); i++){
@@ -559,7 +560,7 @@ public class EditorAlumno extends javax.swing.JFrame {
         boxclase.setModel(boxclasemodel);
         String itembox;
         for (String[] listClase : listaClases) {
-            itembox = listClase[1] + " - " + listClase[2];
+            itembox = listClase[2] + " - " + listClase[3];
             if (boxclasemodel.getIndexOf(itembox) == -1) {
                 boxclase.addItem(itembox);
             }

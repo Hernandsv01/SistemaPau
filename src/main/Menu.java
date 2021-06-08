@@ -8,6 +8,7 @@ package main;
 import tools.DBConnection;
 import java.awt.Color;
 import java.time.LocalDate;
+import java.util.List;
 import tools.Alumno;
 
 /**

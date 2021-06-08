@@ -5,6 +5,7 @@
  */
 package tools;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,9 +26,52 @@ public class PopupBirthweeks extends javax.swing.JFrame {
         initModel();
         for(int i = 0; i < infoCumples.size(); i++){
             String[] yearMonthDay = infoCumples.get(i)[1].split("-");
-            infoCumples.get(i)[1] = yearMonthDay[1] + "-" + yearMonthDay[2];
+            infoCumples.get(i)[1] = getMonth(yearMonthDay[1]) + " - " + yearMonthDay[2];
             model.addRow(infoCumples.get(i));
         }
+    }
+    
+    private static String getMonth(String month){
+        String monthValue = month;
+        switch(month){
+            case "01":
+                monthValue = "Enero";
+                break;
+            case "02":
+                monthValue = "Febrero";
+                break;
+            case "03":
+                monthValue = "Marzo";
+                break;
+            case "04":
+                monthValue = "Abril";
+                break;
+            case "05":
+                monthValue = "Mayo";
+                break;
+            case "06":
+                monthValue = "Junio";
+                break;
+            case "07":
+                monthValue = "Julio";
+                break;
+            case "08":
+                monthValue = "Agosto";
+                break;
+            case "09":
+                monthValue = "Septiembre";
+                break;
+            case "10":
+                monthValue = "Octubre";
+                break;
+            case "11":
+                monthValue = "Noviembre";
+                break;
+            case "12":
+                monthValue = "Diciembre";
+                break;
+        }
+        return monthValue;
     }
 
     /**
