@@ -148,6 +148,8 @@ public class ConfirmMessage extends javax.swing.JFrame {
                 String id_clase = Clase.generateClassID(Clase.setClassValue(dia), horamins[0], horamins[1]);
                 String statement2 = "DELETE FROM `clasesalumnos` WHERE `id_clase` = '" + id_clase + "'";
                 DBConnection.getInstance().modificationStatement(statement2);
+                String statement3 = "DELETE FROM `tematicaclases` WHERE `id_clase` = '" + id_clase + "'";
+                DBConnection.getInstance().modificationStatement(statement3);
                 String statement1 = "DELETE FROM `clasesemanal` WHERE `ID` = '" + id_clase + "'";
                 DBConnection.getInstance().modificationStatement(statement1);
                 dispose();

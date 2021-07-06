@@ -489,11 +489,21 @@ public class EditorAlumno extends javax.swing.JFrame {
         int index = boxclase.getSelectedIndex();
         model.addRow(str);
         
-        //Check if exceeds max number
-        String selstatement = "SELECT COUNT(*) FROM `clasesalumnos` WHERE `id_clase` = '" + Clase.generateClassIDFromDisplay(boxclase.getSelectedItem().toString()) + "'";
-        List<String[]> number = DBConnection.getInstance().selectStatement(selstatement, 1);
-        if(Integer.parseInt(number.get(0)[0]) >= 12){
-            new PopupMessage("Maximo numero de alumnos alcanzado", Color.YELLOW).setVisible(true);
+        //Check if exceeds max number (12 normally, 24 on fridays(dia == 4))
+        String selstatement1 = "SELECT * FROM `clasesemanal` WHERE `ID` = '" + Clase.generateClassIDFromDisplay(boxclase.getSelectedItem().toString()) + "'";
+        List<String[]> dia = DBConnection.getInstance().selectStatement(selstatement1, 7);
+        if(dia.get(0)[2].equals("4")){
+            String selstatement2 = "SELECT COUNT(*) FROM `clasesalumnos` WHERE `id_clase` = '" + Clase.generateClassIDFromDisplay(boxclase.getSelectedItem().toString()) + "'";
+            List<String[]> number = DBConnection.getInstance().selectStatement(selstatement2, 1);
+            if(Integer.parseInt(number.get(0)[0]) >= 24){
+                new PopupMessage("Maximo numero de alumnos alcanzado", Color.YELLOW).setVisible(true);
+            }
+        }else{
+            String selstatement2 = "SELECT COUNT(*) FROM `clasesalumnos` WHERE `id_clase` = '" + Clase.generateClassIDFromDisplay(boxclase.getSelectedItem().toString()) + "'";
+            List<String[]> number = DBConnection.getInstance().selectStatement(selstatement2, 1);
+            if(Integer.parseInt(number.get(0)[0]) >= 12){
+                new PopupMessage("Maximo numero de alumnos alcanzado", Color.YELLOW).setVisible(true);
+            }
         }
         
         boxclase.setSelectedIndex(0);

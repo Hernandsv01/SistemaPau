@@ -10,11 +10,9 @@ import tools.PopupMessage;
 import tools.Clase;
 import tools.DBConnection;
 import java.awt.Color;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -493,6 +491,8 @@ public class ClaseFrame extends javax.swing.JFrame {
         if(tablasemanal.getSelectedColumn() == 0){
             return;
         }
+        String diaDB = String.valueOf(tablasemanal.getSelectedColumn()-1);
+        
         if(tablasemanal.getValueAt(tablasemanal.getSelectedRow(), tablasemanal.getSelectedColumn()) != null){
             String hora[] = tablasemanal.getValueAt(tablasemanal.getSelectedRow(), 0).toString().split(" - ");
             int dia = tablasemanal.getSelectedColumn()-1;
@@ -500,6 +500,9 @@ public class ClaseFrame extends javax.swing.JFrame {
             String statement1 = "SELECT * FROM `clasesemanal`";
             List<String[]> horas = DBConnection.getInstance().selectStatement(statement1, 7);
             for(int i = 0; i < horas.size(); i++){
+                if(!horas.get(i)[2].equals(diaDB)){
+                    continue;
+                }
                 String[] str = horas.get(i);
                 String horaDB = str[3];
                 String[] horasminsDB = horaDB.split(":");
